@@ -11,6 +11,12 @@ interface ModalProps {
 }
 
 export default function Modal({ isOpen, onClose, children }: ModalProps) {
+  const [mounted, setMounted] = React.useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   //   Esc
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -39,7 +45,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   return createPortal(
     <div

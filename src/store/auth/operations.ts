@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { AuthResponse, Credentials } from '@/types/Auth';
 
-axios.defaults.baseURL = 'https://easybuy-qai8.onrender.com/api';
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://89.168.115.138:8080/api';
 
 const setAuthHeader = (token: string) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;

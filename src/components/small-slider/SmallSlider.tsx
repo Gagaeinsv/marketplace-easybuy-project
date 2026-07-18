@@ -53,6 +53,10 @@ export default function SmallSlider({
             slidesPerView: 3,
             spaceBetween: 16,
           },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 24,
+          },
           1024: {
             slidesPerView: 6,
             spaceBetween: 48,
@@ -71,10 +75,10 @@ export default function SmallSlider({
           >
             <div
               className="
-                flex items-center justify-center rounded-[24px]
-                bg-white2
-                w-[100px] h-[100px] lg:w-[184px] lg:h-[184px]
-                shadow-1
+                flex items-center justify-center rounded-2xl md:rounded-[24px]
+                bg-[#f1f1f1]
+                w-full max-w-[100px] aspect-square lg:max-w-none lg:w-[184px] lg:h-[184px]
+                transition-all duration-300 hover:shadow-md
               "
             >
               {isFixedSize ? (
@@ -83,7 +87,7 @@ export default function SmallSlider({
                   alt={`brand-${index}`}
                   width={182}
                   height={184}
-                  className={`max-w-[100px] h-auto ${imageClassName ?? ''}`}
+                  className={`w-[80%] max-w-[100px] h-auto object-contain ${imageClassName ?? ''}`}
                 />
               ) : (
                 <div className="relative w-full h-full">

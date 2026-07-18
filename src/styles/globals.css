@@ -26,13 +26,19 @@
   /* States */
   --color-danger: #ff4e64;
   --color-success: #00ae37;
+  --color-sale-badge: #fb923c;
+  --color-card-bg: #ffffff;
 
   /* Gradients (background-image) */
   --gradient-brand: linear-gradient(180deg, #4b99ff 0%, #3e5b7e 55%, #071739 100%);
   --gradient-accent: linear-gradient(180deg, #ff7400 0%, #df4300 100%);
+  --background-image-gradient-brand: linear-gradient(180deg, #4b99ff 0%, #3e5b7e 55%, #071739 100%);
+  --background-image-gradient-accent: linear-gradient(180deg, #ff7400 0%, #df4300 100%);
 
   /* 🖋️ ШРИФТИ */
-  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-dm: var(--font-dm), sans-serif;
+  --font-zen: var(--font-zen), sans-serif;
 
   /* 🌫 ТІНЬ */
   --shadow-main: 0 8px 24px rgb(0 0 0 / 0.15);
@@ -92,39 +98,25 @@
 }
 
 /* Components Layer */
-/*@layer components {*/
-/*  .btnHeader {*/
-/*    @apply font-semibold leading-tight flex items-center justify-center*/
-/*    px-[22px] py-[10px] border-4 border-transparent rounded-lg*/
-/*    cursor-pointer transition-all duration-300 ease-in-out bg-transparent text-white2;*/
-/*  }*/
+@layer components {
+  .gradient-button {
+    background: linear-gradient(0deg, #4b99ff 0%, #3e5b7e 54.72%, #071739 100%);
+    color: white;
+  }
 
-/*  .btnHeader:hover {*/
-/*    @apply scale-105 bg-white/10 border;*/
-/*    border-color: theme('colors.btn-hover-border');*/
-/*    box-shadow: 0 0 14px 0 rgba(201, 223, 255, 0.52);*/
-/*  }*/
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    clip-path: inset(100%);
+    clip: rect(0 0 0 0);
+    overflow: hidden;
+  }
+}
 
-/*  .btnHeader:active {*/
-/*    @apply scale-110 border-4;*/
-/*    border-color: theme('colors.btn-hover-border');*/
-/*  }*/
-
-/*  .gradient-button {*/
-/*    background: linear-gradient(0deg, #4b99ff 0%, #3e5b7e 54.72%, #071739 100%);*/
-/*    color: white;*/
-/*  }*/
-
-/*  .visually-hidden {*/
-/*    position: absolute;*/
-/*    width: 1px;*/
-/*    height: 1px;*/
-/*    margin: -1px;*/
-/*    border: 0;*/
-/*    padding: 0;*/
-/*    white-space: nowrap;*/
-/*    clip-path: inset(100%);*/
-/*    clip: rect(0 0 0 0);*/
-/*    overflow: hidden;*/
-/*  }*/
-/*}*/
+.custom-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.custom-scrollbar::-webkit-scrollbar { display: none; }

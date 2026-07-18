@@ -9,12 +9,12 @@ const PrivateRoute = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn && process.env.NODE_ENV !== 'development') {
       router.replace('/');
     }
   }, [isLoggedIn, router]);
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn && process.env.NODE_ENV !== 'development') {
     return <div>Loading...</div>;
   }
 

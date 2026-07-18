@@ -1,26 +1,28 @@
 import SearchIcon from '@/components/icons/SearchIcon.jsx';
+import { useLanguage } from '@/context/LanguageContext';
 
 const SearchBox = () => {
+  const { locale, t } = useLanguage();
+
   return (
-    <div className="flex items-center">
-      <div className="relative flex-grow bg-white2 rounded-[4px] lg:rounded-r-none focus-within:[&_input::placeholder]:text-blue10 focus-within:[&_svg_path]:fill-white2 focus-within:[&_svg_path]:stroke-blue10 md:rounded-l-[8px]">
-        <SearchIcon className="absolute top-[50%] left-[12px] -translate-y-1/2 pointer-events-none [&_path]:fill-transparent [&_path]:stroke-blue9 [&_path]:transition-colors" />
+    <div className="flex items-center w-full">
+      <div className="relative flex-grow bg-white rounded-[4px] lg:rounded-r-none focus-within:[&_input::placeholder]:text-brand-700 focus-within:[&_svg_path]:fill-transparent focus-within:[&_svg_path]:stroke-brand-700 md:rounded-l-[8px]">
+        <SearchIcon className="absolute top-[50%] left-[12px] -translate-y-1/2 pointer-events-none [&_path]:fill-transparent [&_path]:stroke-brand-400 [&_path]:transition-colors" />
         <input
-          className="text-[12px] max-w-[159px] py-[6px] pl-[36px] pr-[12px] text-blue10 placeholder:text-blue9 placeholder:transition-colors md:text-[16px] md:max-w-[480px] md:py-[15px] md:pl-[48px] md:pr-[280px]"
+          className="text-[12px] w-[159px] py-[6px] pl-[36px] pr-[12px] text-text placeholder:text-brand-400 placeholder:transition-colors md:text-[16px] md:w-full md:py-[15px] md:pl-[48px] md:pr-[16px] outline-none"
           type="text"
-          placeholder="Search"
+          placeholder={locale === 'ua' ? 'Пошук товарів, брендів...' : 'Search for anything'}
         />
       </div>
       <button
-        className="bg-[image:var(--gradient-accent)]
+        className="bg-gradient-accent hover:brightness-110
         rounded-l-none
-    hidden md:block font-medium text-[16px] rounded-r-[8px]
-    px-[13px] py-[15px] w-[104px] text-white2 cursor-pointer
-    bg-orange-gradient hover:bg-orange-gradient-hover
-    transition-all duration-300
-  "
+        hidden md:block font-semibold text-[16px] rounded-r-[8px]
+        px-[13px] py-[15px] w-[104px] text-white cursor-pointer
+        transition-all duration-300
+      "
       >
-        Search
+        {t('searchButton')}
       </button>
     </div>
   );

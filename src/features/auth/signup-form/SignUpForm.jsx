@@ -10,6 +10,7 @@ import { register } from '@/store/auth/operations';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import TextInput from '@/components/input/TextInput';
+import { useLanguage } from '@/context/LanguageContext';
 
 const registrationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -31,13 +32,14 @@ const registrationSchema = Yup.object().shape({
   privacy: Yup.boolean().oneOf([true], 'You must accept the Privacy Policy').required('Required'),
 });
 
-const SignUpForm = () => {
+const SignUpForm = ({ role = 'CUSTOMER' }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState(false);
+  const { t } = useLanguage();
 
   const handleSubmit = async (values, actions) => {
     setIsLoading(true);
@@ -47,7 +49,7 @@ const SignUpForm = () => {
       if (register.fulfilled.match(result)) {
         router.push('/check-email');
       } else {
-        toast.error('Registration failed.');
+        toast.error(t('registrationFailed') || 'Registration failed.');
         setErrorState(true);
 
         setTimeout(() => {
@@ -55,7 +57,7 @@ const SignUpForm = () => {
         }, 3000);
       }
     } catch (error) {
-      toast.error('An unknown error occurred during register');
+      toast.error(t('registrationError') || 'An unknown error occurred during register');
       setErrorState(true);
 
       setTimeout(() => {
@@ -70,7 +72,7 @@ const SignUpForm = () => {
   return (
     <div>
       <h1 className="flex justify-center font-dm font-medium text-[40px] lg:text-[48px] mb-2">
-        Sign up
+        {t('signUpTitle')}
       </h1>
       <Formik
         validationSchema={registrationSchema}
@@ -80,19 +82,19 @@ const SignUpForm = () => {
           confirmPassword: '',
           agreement: false,
           privacy: false,
-          role: 'CUSTOMER',
+          role: role,
         }}
         onSubmit={handleSubmit}
       >
         <Form className="flex flex-col text-black ">
-          <TextInput name="email" label="Email" placeholder="Enter Email" />
+          <TextInput name="email" label={t('emailLabel')} placeholder={t('emailPlaceholder')} />
 
-          <TextInput name="number" label="Phone number" placeholder="Enter Phone number" />
+          <TextInput name="number" label={t('phoneNumberLabel')} placeholder={t('phoneNumberPlaceholder')} />
 
           <TextInput
             name="password"
-            label="Password"
-            placeholder="Enter password"
+            label={t('passwordLabel')}
+            placeholder={t('passwordPlaceholder')}
             type="password"
             showPasswordToggle
             showPassword={showPassword}
@@ -102,8 +104,8 @@ const SignUpForm = () => {
 
           <TextInput
             name="confirmPassword"
-            label="Сonfirm Password"
-            placeholder="Сonfirm Password"
+            label={t('confirmPasswordLabel')}
+            placeholder={t('confirmPasswordPlaceholder')}
             type="password"
             showPasswordToggle
             showPassword={showConfirmPassword}
@@ -114,7 +116,7 @@ const SignUpForm = () => {
           <div className="h-[45px]">
             <label className="flex gap-2 ">
               <Field type="checkbox" name="agreement" id="agreement" />
-              <p className="text-[14px] text-blue-500">User Agreement</p>
+              <p className="text-[14px] text-blue-500">{t('userAgreementLink')}</p>
             </label>
             <ErrorMessage
               className="min-h-5 text-[12px] text-red-500 pt-2"
@@ -125,7 +127,7 @@ const SignUpForm = () => {
           <div className="mb-2 h-[45px]">
             <label className="flex gap-2 ">
               <Field type="checkbox" name="privacy" id="privacy" />
-              <p className="text-[14px] text-blue-500">Privacy Policy</p>
+              <p className="text-[14px] text-blue-500">{t('privacyPolicyLink')}</p>
             </label>
             <ErrorMessage
               className="min-h-5 text-[12px] text-red-500 pt-2"
@@ -143,7 +145,7 @@ const SignUpForm = () => {
     border-none mb-3
   `}
           >
-            {isLoading ? 'Loading...' : 'Confirm'}
+            {isLoading ? t('loadingText') : t('confirmBtn')}
           </button>
         </Form>
       </Formik>

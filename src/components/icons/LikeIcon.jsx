@@ -8,8 +8,8 @@ const LikeIcon = (props) => (
     {...props}
   >
     <path
-      fill="#FFF5EE"
-      stroke="#FFF5EE"
+      fill="currentColor"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"

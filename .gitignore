@@ -48,3 +48,9 @@ next-env.d.ts
 
 # idea
 .idea
+# User data and generated files
+restored_chats/
+screenshots/
+docs/
+.agents/
+page.html

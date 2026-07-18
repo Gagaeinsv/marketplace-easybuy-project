@@ -1,24 +1,27 @@
 'use client';
 import { useState } from 'react';
 
-export default function StarRating(intialRating = 0) {
-  const [rating, setRating] = useState(intialRating);
+export default function StarRating({ initialRating = 0, className = "", activeColor = "#df4300", inactiveColor = "#E0E0E0" }) {
+  const [rating, setRating] = useState(initialRating);
   const [hovered, setHovered] = useState(false);
 
   const handleClick = (index) => {
     setRating(index);
   };
+  
   return (
-    <div className="absolute bottom-2 left-2 flex bg-transparent z-1 md:bottom-4 md:left-4 md:gap-x-1">
+    <div className={`flex items-center gap-1 ${className}`}>
       {[...Array(5)].map((_, i) => {
         const index = i + 1;
+        // If hovered is truthy, use it. Otherwise use rating.
+        const isActive = hovered ? hovered >= index : rating >= index;
         return (
           <svg
             key={index}
-            width="16"
-            height="16"
+            width="14"
+            height="14"
             viewBox="0 0 16 16"
-            fill={(hovered || rating) >= index ? '#df4300' : '#E0E0E0'}
+            fill={isActive ? activeColor : inactiveColor}
             xmlns="http://www.w3.org/2000/svg"
             onClick={() => handleClick(index)}
             onMouseEnter={() => setHovered(index)}

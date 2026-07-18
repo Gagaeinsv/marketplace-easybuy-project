@@ -1,25 +1,109 @@
 'use client';
 import { useState } from 'react';
+import { useLanguage } from '@/context/LanguageContext';
+import Image from 'next/image';
+import { CategoryIcon } from '@/components/icons/CategoryIcons';
+import { catalogData } from '@/data/catalogData';
 
 const DropdownBtn = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeL1, setActiveL1] = useState(catalogData[0]);
+  const [activeL2, setActiveL2] = useState(catalogData[0].children ? catalogData[0].children[0] : null);
+  const { t } = useLanguage();
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
+  // Close menu when clicking outside (on the overlay)
+  const closeMenu = () => setIsOpen(false);
+
   return (
-    <div className="hidden lg:relative lg:block">
-      <button className="btnHeader text-[32px] font-semibold" onClick={toggleDropdown}>
-        Catalogue
-      </button>
+    <>
+      <div className="hidden lg:relative lg:block">
+        <button 
+          className="text-[24px] font-semibold text-white bg-transparent border-2 border-white rounded-lg px-[40px] py-[6px] shadow-[0_0_14px_rgba(201,223,255,0.52)] flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer leading-tight" 
+          onClick={toggleDropdown}
+        >
+          <span>{t('catalogue')}</span>
+        </button>
+      </div>
+
       {isOpen && (
-        <ul className="absolute top-[100%] left-0 mt-2 bg-white border-solid border-gray-200 rounded-lg py-3 px-0 shadow-main z-50 text-black">
-          <li className="py-2.5 px-[65px] cursor-pointer hover:bg-white">Filters</li>
-          <li className="py-2.5 px-[65px] cursor-pointer hover:bg-white">Products</li>
-          <li className="py-2.5 px-[65px] cursor-pointer hover:bg-white">Other</li>
-          <li className="py-2.5 px-[65px] cursor-pointer hover:bg-white">Home</li>
-        </ul>
+        <div className="fixed top-[112px] left-0 w-full h-[calc(100vh-112px)] bg-black/40 z-50 flex justify-center" onClick={closeMenu}>
+          <div 
+            className="w-full max-w-[1440px] h-[680px] bg-white flex shadow-2xl relative" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Column 1: Level 1 Categories */}
+            <div className="w-[300px] bg-white border-r border-gray-200 overflow-y-auto py-4 custom-scrollbar">
+              {catalogData.map((cat) => (
+                <div 
+                  key={cat.id}
+                  className={`flex items-center justify-between px-6 py-2.5 cursor-pointer transition-colors ${activeL1?.id === cat.id ? 'text-brand-700 bg-brand-50/40 font-medium' : 'text-gray-600 hover:text-brand-700 hover:bg-brand-50/20'}`}
+                  onMouseEnter={() => {
+                    setActiveL1(cat);
+                    setActiveL2(cat.children ? cat.children[0] : null);
+                  }}
+                >
+                  <div className="flex items-center gap-3">
+                    <CategoryIcon name={cat.icon} className="w-[18px] h-[18px]" />
+                    <span className="text-[15px]">{cat.label}</span>
+                  </div>
+                  {cat.children && (
+                    <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 9L5 5L1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Column 2: Level 2 Categories */}
+            <div className="w-[300px] border-r border-gray-200 overflow-y-auto py-4 bg-white custom-scrollbar">
+              {activeL1?.children ? (
+                activeL1.children.map((child) => (
+                  <div 
+                    key={child.id}
+                    className={`flex items-center justify-between px-6 py-3 cursor-pointer transition-colors ${activeL2?.id === child.id ? 'text-brand-700' : 'text-gray-700 hover:text-brand-700'}`}
+                    onMouseEnter={() => setActiveL2(child)}
+                  >
+                    <span className="font-medium text-[15px]">{child.label}</span>
+                    {child.children && (
+                      <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 9L5 5L1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="px-6 py-4 text-gray-400 text-sm italic">No subcategories</div>
+              )}
+            </div>
+
+            {/* Column 3: Level 3 Categories */}
+            <div className="w-[300px] border-r border-gray-200 overflow-y-auto py-4 bg-white custom-scrollbar">
+              {activeL2?.children ? (
+                activeL2.children.map((subchild) => (
+                  <div 
+                    key={subchild.id}
+                    className="flex items-center px-6 py-2.5 cursor-pointer transition-colors text-gray-600 hover:text-brand-700"
+                  >
+                    <span className="text-[14px]">{subchild.label}</span>
+                  </div>
+                ))
+              ) : null}
+            </div>
+
+            {/* Column 4: Empty space / promotional area */}
+            <div className="flex-1 bg-white p-8 flex items-center justify-center relative">
+              {/* Promotional banners or images */}
+              <div className="relative w-full h-full max-w-[400px] max-h-[400px] opacity-90">
+                <Image src="/images/catalog-illustration.svg" alt="Catalog Promotion" fill className="object-contain" priority />
+              </div>
+            </div>
+          </div>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

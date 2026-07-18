@@ -3,21 +3,38 @@ import FooterSeller from '@/components/footer/footer-seller/FooterSeller.jsx';
 import SocialList from '@/components/social-list/SocialList.jsx';
 import Privacy from '@/components/privacy/Privacy.jsx';
 import LogoFooter from '@/components/footer/logo-footer/LogoFooter.jsx';
+import CopyrightIcon from '@/components/icons/CopyrightIcon.jsx';
 
 const Footer = () => {
   return (
-    <footer className="bg-primary text-white hidden md:block bg-main pt-6 pb-7">
-      <div className="container">
-        <div className="flex justify-left mb-13">
-          <LogoFooter />
+    <footer className="bg-brand-700 text-white pt-10 pb-6">
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-16 w-full">
+        <div className="flex flex-col md:flex-row md:justify-between items-center md:items-start mb-10 gap-y-10 md:gap-y-0">
+          
+          <div className="flex flex-col flex-1 items-center md:items-start w-full order-2 md:order-1">
+            <div className="mb-6 hidden md:block">
+              <LogoFooter />
+            </div>
+            <FooterList />
+          </div>
+          
+          <div className="w-full max-w-[400px] flex flex-col items-center md:items-start order-1 md:order-2 text-center md:text-left">
+            <div className="mb-6 md:hidden">
+              <LogoFooter />
+            </div>
+            <FooterSeller />
+          </div>
+
         </div>
-        <div className="flex justify-between ">
-          <FooterList />
-          <FooterSeller />
-        </div>
-        <div className="flex justify-between max-w-[65%] -mt-10">
+        <div className="flex flex-col md:flex-row justify-between items-center border-t border-white/20 pt-6 mt-6 gap-y-6 md:gap-y-0">
           <SocialList />
-          <Privacy />
+          <div className="flex items-center gap-x-2 text-xs font-medium">
+            <CopyrightIcon />
+            <span>Easybuy.2024 All rights reserved</span>
+          </div>
+          <div className="hidden md:block">
+            <Privacy />
+          </div>
         </div>
       </div>
     </footer>

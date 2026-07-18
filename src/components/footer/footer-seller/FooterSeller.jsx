@@ -1,16 +1,20 @@
+'use client';
+
 import SellItemBtn from '@/components/button/sell-item-btn/SellItemBtn.jsx';
+import { useLanguage } from '@/context/LanguageContext';
 
 const FooterSeller = () => {
+  const { t } = useLanguage();
   return (
-    <div className="text-white -mt-18">
-      <h2 className="font-bold text-2xl mb-2">Start selling today!</h2>
-      <p className="font-medium mb-4 max-w-[300px]">
-        Join our marketplace and discover new opportunities for your business!
+    <div className="text-white">
+      <h2 className="font-bold text-lg md:text-xl mb-2">{t('startSelling')}</h2>
+      <p className="text-sm md:text-[13px] mb-4 hidden md:block">
+        {t('sellSubtitle')}
       </p>
-      <ul className="ml-8 mb-5.5 list-disc">
-        <li>Millions of buyers are waiting for your products;</li>
-        <li>Increase sales and make more profit;</li>
-        <li>User-friendly control panel and growth tools</li>
+      <ul className="ml-5 mb-5 list-disc flex flex-col gap-1 text-[11px] md:text-xs hidden md:flex">
+        <li>{t('sellPoint1')}</li>
+        <li>{t('sellPoint2')}</li>
+        <li>{t('sellPoint3')}</li>
       </ul>
       <SellItemBtn />
     </div>
