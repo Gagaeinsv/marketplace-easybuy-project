@@ -15,7 +15,7 @@ import { useLanguage } from '@/context/LanguageContext';
 const registrationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
   number: Yup.string()
-    .matches(/^\+380\d{9}$/, 'Enter a valid phone number (e.g. +380991234567)')
+    .matches(/^\+\d{9,15}$/, 'Enter a valid international phone number (e.g. +380991234567)')
     .required('Phone number is required'),
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters long')
