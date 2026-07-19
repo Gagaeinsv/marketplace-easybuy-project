@@ -15,7 +15,7 @@ export default function RecommendationsNew() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/goods`);
+        const response = await axios.get(`/goods`);
         const mappedProducts = response.data.map(item => ({
           id: item.id,
           image: item.mainImageUrl,

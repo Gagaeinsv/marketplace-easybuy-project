@@ -25,7 +25,7 @@ export const fetchProducts = createAsyncThunk<ProductItem[], Record<string, any>
   'products/fetchAll',
   async (filters, thunkAPI) => {
     try {
-      const response = await axios.get<ProductItem[]>(`${process.env.NEXT_PUBLIC_API_URL}/goods`, {
+      const response = await axios.get<ProductItem[]>(`/goods`, {
         params: filters || {}
       });
       return response.data;

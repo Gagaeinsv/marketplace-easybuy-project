@@ -40,7 +40,7 @@ export default function ProductDetailsPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/goods/${id}`);
+        const response = await axios.get(`/goods/${id}`);
         const productData = response.data;
         setProduct(productData);
         
