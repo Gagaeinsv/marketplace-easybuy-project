@@ -22,6 +22,14 @@ const nextConfig = {
     return config;
   },
   turbopack: {},
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://89.168.115.138:8080/api/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { CustomerProfileDto, CustomerAddressDto } from './types';
 import toast from 'react-hot-toast';
 
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://89.168.115.138:8080/api';
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 // Get Profile
 export const fetchUserProfile = createAsyncThunk<CustomerProfileDto, void, { rejectValue: string }>(
