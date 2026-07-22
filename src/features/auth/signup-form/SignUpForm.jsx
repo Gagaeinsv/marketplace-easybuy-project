@@ -44,7 +44,8 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
   const handleSubmit = async (values, actions) => {
     setIsLoading(true);
     try {
-      const result = await dispatch(register(values));
+      const { agreement, privacy, ...registrationData } = values;
+      const result = await dispatch(register({ ...registrationData, role }));
 
       if (register.fulfilled.match(result)) {
         router.push('/check-email');
