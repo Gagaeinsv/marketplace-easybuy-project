@@ -131,8 +131,8 @@ function CataloguePage() {
                 >
                   <option value="price_asc">from cheap to expensive</option>
                   <option value="price_desc">from expensive to cheap</option>
-                  <option value="newest">newest</option>
-                  <option value="popular">popular</option>
+                  <option value="popular">by popularity</option>
+                  <option value="newest">by novelty</option>
                 </select>
               </div>
 
