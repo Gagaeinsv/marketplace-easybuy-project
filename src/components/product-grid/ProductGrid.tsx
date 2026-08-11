@@ -11,7 +11,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-20">
-        <p className="text-xl font-medium text-gray-500">Loading products...</p>
+        <p className="text-xl font-medium text-[#104c9a]">Loading products...</p>
       </div>
     );
   }
@@ -25,7 +25,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
   }
 
   return (
-    <ul className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+    <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 lg:gap-6">
       {products.map((item) => {
         // Map backend API data to the format ProductCard expects
         const productProps = {
@@ -42,7 +42,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, isLoading }) => {
         return (
           <li
             key={item.id}
-            className="flex flex-col bg-white border border-[#e2e2e2] relative rounded-[4px] overflow-hidden transition-all duration-300 hover:shadow-main"
+            className="flex flex-col bg-white border border-[#e2e2e2] relative rounded-[8px] overflow-hidden transition-all duration-300 hover:shadow-main"
           >
             <ProductCard {...productProps} />
           </li>
