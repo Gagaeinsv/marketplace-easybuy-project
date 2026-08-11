@@ -15,6 +15,7 @@ import {
   resetFilters,
 } from '@/store/filters/slice';
 import ProductGrid from '@/components/product-grid/ProductGrid';
+import FiltersPanel from '@/components/filters/FiltersPanel';
 import FilterPillsBar from '@/components/filters/FilterPillsBar';
 import { useLanguage } from '@/context/LanguageContext';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
@@ -33,6 +34,10 @@ function CataloguePage() {
   const { items: products, isLoading, error } = useAppSelector((state) => state.products);
   const filters = useAppSelector((state) => state.filters);
   const { t } = useLanguage();
+
+  // Layout mode: 'sidebar' (Node 1567:7581) vs 'pills' (Node 835:3667)
+  const [layoutMode, setLayoutMode] = useState<'sidebar' | 'pills'>('sidebar');
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -101,170 +106,230 @@ function CataloguePage() {
     filters.price.max < 10000;
 
   return (
-    <div className="bg-white min-h-screen pb-16">
-      {/* Top Filter Bar Strip matching Figma Filters_1 frame */}
-      <div className="bg-[#EEF2F6] border-b border-gray-200 py-4 mb-8">
-        <div className="container mx-auto px-4 max-w-[1440px] flex flex-col gap-4">
-          {/* Row 1: Breadcrumbs, Sort, and Subscribe */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            {/* Breadcrumbs */}
-            <nav className="flex items-center gap-2 text-xs text-gray-600 font-medium">
-              <Link href="/" className="hover:text-[#104c9a]">
-                Clothes for Women
-              </Link>
-              <span>/</span>
-              <span>Outerwear</span>
-              <span>/</span>
-              <span className="font-bold text-[#104c9a]">Jackets</span>
-            </nav>
+    <div className="bg-[#f8f9fa] min-h-screen pb-16">
+      <div className="container mx-auto px-4 max-w-[1440px] pt-6">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-xs text-gray-500 mb-4">
+          <Link href="/" className="hover:text-[#104c9a]">
+            {t('home') || 'Головна'}
+          </Link>
+          <span>/</span>
+          <span className="font-semibold text-[#104c9a]">{t('catalogue') || 'Каталог'}</span>
+        </nav>
 
-            {/* Right Controls: Sort & Subscribe */}
-            <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
-              {/* Sort Select */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-gray-600">Sort:</span>
-                <select
-                  value={filters.sort}
-                  onChange={(e) => dispatch(setSort(e.target.value))}
-                  className="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 outline-none focus:border-[#104c9a] cursor-pointer shadow-sm"
-                >
-                  <option value="price_asc">from cheap to expensive</option>
-                  <option value="price_desc">from expensive to cheap</option>
-                  <option value="newest">newest</option>
-                  <option value="popular">popular</option>
-                </select>
-              </div>
-
-              {/* Subscribe your searches */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-600 font-medium hidden sm:inline">Subscribe your searches</span>
-                <button
-                  onClick={() => setIsSubscribed(!isSubscribed)}
-                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shadow-sm flex items-center gap-1.5 ${
-                    isSubscribed
-                      ? 'bg-emerald-600 text-white border-emerald-600'
-                      : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
-                  }`}
-                >
-                  <span>{isSubscribed ? '✓ Subscribed' : '🔔 Subscribe'}</span>
-                </button>
-              </div>
-            </div>
+        {/* Top Header Card (Figma Node 1567:7581 Specs) */}
+        <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#104c9a]">
+              {t('catalogue') || 'Каталог товарів'}
+            </h1>
+            <p className="text-xs text-gray-500 mt-1">
+              Знайдено <span className="font-bold text-[#104c9a]">{filteredProducts.length}</span> товарів
+            </p>
           </div>
 
-          {/* Row 2: Horizontal Filter Pills */}
-          <FilterPillsBar />
-        </div>
-      </div>
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+            {/* Layout View Mode Switcher (Node 1567:7581 Sidebar vs Node 835:3667 Pills) */}
+            <div className="hidden lg:flex items-center bg-gray-100 p-1 rounded-xl text-xs font-semibold">
+              <button
+                onClick={() => setLayoutMode('sidebar')}
+                className={`px-3 py-1.5 rounded-lg transition-all ${
+                  layoutMode === 'sidebar' ? 'bg-white text-[#104c9a] shadow-sm font-bold' : 'text-gray-600 hover:text-[#104c9a]'
+                }`}
+                title="Макет з боковим меню (Node 1567:7581)"
+              >
+                📋 Сайдбар (1567:7581)
+              </button>
+              <button
+                onClick={() => setLayoutMode('pills')}
+                className={`px-3 py-1.5 rounded-lg transition-all ${
+                  layoutMode === 'pills' ? 'bg-white text-[#104c9a] shadow-sm font-bold' : 'text-gray-600 hover:text-[#104c9a]'
+                }`}
+                title="Макет з верхніми плашками (Node 835:3667)"
+              >
+                🏷️ Верхні плашки (835:3667)
+              </button>
+            </div>
 
-      {/* Main Content Area */}
-      <div className="container mx-auto px-4 max-w-[1440px]">
-        {/* Active Filter Tags Chips */}
+            {/* Subscribe Searches Button */}
+            <button
+              onClick={() => setIsSubscribed(!isSubscribed)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 ${
+                isSubscribed
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                  : 'bg-blue-50 text-[#104c9a] border-blue-200 hover:bg-blue-100'
+              }`}
+            >
+              <span>{isSubscribed ? '✓ Ви підписані' : '🔔 Підписатися'}</span>
+            </button>
+
+            {/* Mobile Filters Drawer Trigger */}
+            <button
+              onClick={() => setIsMobileFiltersOpen(true)}
+              className="lg:hidden bg-[#104c9a] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm"
+            >
+              <span>⚙️ Фільтри</span>
+              {hasActiveFilters && <span className="w-2 h-2 rounded-full bg-amber-400" />}
+            </button>
+
+            {/* Sorting Select */}
+            <div className="flex items-center gap-2">
+              <label className="text-xs font-semibold text-gray-500 whitespace-nowrap hidden sm:inline">
+                Сортувати:
+              </label>
+              <select
+                value={filters.sort}
+                onChange={(e) => dispatch(setSort(e.target.value))}
+                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs font-medium text-gray-700 outline-none focus:border-[#104c9a] cursor-pointer"
+              >
+                <option value="newest">Новинки</option>
+                <option value="popular">За популярністю</option>
+                <option value="price_asc">Від дешевих до дорогих</option>
+                <option value="price_desc">Від дорогих до дешевих</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* If Pills Layout Mode is active, show top filter pills */}
+        {layoutMode === 'pills' && (
+          <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm mb-6">
+            <FilterPillsBar />
+          </div>
+        )}
+
+        {/* Active Filter Chips */}
         {hasActiveFilters && (
-          <div className="flex flex-wrap items-center gap-2 mb-6 bg-[#f8f9fa] p-3.5 rounded-xl border border-gray-200">
-            <span className="text-xs font-bold text-gray-500 mr-1">Active filters:</span>
+          <div className="flex flex-wrap items-center gap-2 mb-6 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+            <span className="text-xs font-bold text-gray-500 mr-2">Активні фільтри:</span>
             {filters.brands.map((b) => (
               <span
                 key={b}
                 onClick={() => dispatch(toggleBrand(b))}
-                className="bg-white text-[#104c9a] border border-blue-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 cursor-pointer hover:bg-blue-50 shadow-sm"
+                className="bg-blue-50 text-[#104c9a] border border-blue-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 cursor-pointer hover:bg-blue-100"
               >
-                Brand: {b} <span className="font-bold">✕</span>
+                Бренд: {b} <span className="font-bold">✕</span>
               </span>
             ))}
             {filters.sizes.map((s) => (
               <span
                 key={s}
                 onClick={() => dispatch(toggleSize(s))}
-                className="bg-white text-[#104c9a] border border-blue-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 cursor-pointer hover:bg-blue-50 shadow-sm"
+                className="bg-blue-50 text-[#104c9a] border border-blue-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 cursor-pointer hover:bg-blue-100"
               >
-                Size: {s} <span className="font-bold">✕</span>
+                Розмір: {s} <span className="font-bold">✕</span>
               </span>
             ))}
             {filters.colors.map((c) => (
               <span
                 key={c}
                 onClick={() => dispatch(toggleColor(c))}
-                className="bg-white text-[#104c9a] border border-blue-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 cursor-pointer hover:bg-blue-50 shadow-sm"
+                className="bg-blue-50 text-[#104c9a] border border-blue-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 cursor-pointer hover:bg-blue-100"
               >
-                Color: {c} <span className="font-bold">✕</span>
+                Колір: {c} <span className="font-bold">✕</span>
               </span>
             ))}
             {filters.onlyDiscount && (
               <span
                 onClick={() => dispatch(toggleOnlyDiscount())}
-                className="bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 cursor-pointer hover:bg-amber-100 shadow-sm"
+                className="bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 cursor-pointer hover:bg-amber-100"
               >
-                Discount 🏷️ <span className="font-bold">✕</span>
+                Знижка 🏷️ <span className="font-bold">✕</span>
               </span>
             )}
             <button
               onClick={() => dispatch(resetFilters())}
               className="text-xs text-red-500 font-bold hover:underline ml-auto"
             >
-              Reset all
+              Скинути все
             </button>
           </div>
         )}
 
-        {/* 5-Column Product Grid Area (Figma Filters_1 frame layout) */}
-        <main className="w-full flex flex-col gap-10">
-          {error && (
-            <div className="bg-red-50 text-red-500 p-4 rounded-xl border border-red-200 text-sm">
-              Error loading products: {error}
+        {/* Main Content Layout (Sidebar view for Node 1567:7581) */}
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
+          {/* Desktop Filters Sidebar (Figma Node 1567:7581) */}
+          {layoutMode === 'sidebar' && (
+            <aside className="hidden lg:block w-[300px] shrink-0 sticky top-28">
+              <FiltersPanel />
+            </aside>
+          )}
+
+          {/* Mobile Filters Drawer */}
+          {isMobileFiltersOpen && (
+            <div className="fixed inset-0 bg-black/50 z-50 flex justify-end lg:hidden">
+              <div className="w-[320px] bg-white h-full overflow-y-auto p-4 shadow-xl">
+                <FiltersPanel onClose={() => setIsMobileFiltersOpen(false)} />
+              </div>
             </div>
           )}
 
-          {filteredProducts.length === 0 ? (
-            <div className="bg-white rounded-2xl p-16 text-center border border-gray-200 shadow-sm flex flex-col items-center">
-              <div className="text-4xl mb-3">🔍</div>
-              <h3 className="text-lg font-bold text-[#104c9a] mb-1">No products found</h3>
-              <p className="text-sm text-gray-500 mb-4">Try resetting or adjusting your selected filters</p>
-              <button
-                onClick={() => dispatch(resetFilters())}
-                className="px-6 py-2.5 bg-[#104c9a] text-white font-bold rounded-xl text-xs hover:brightness-110 shadow-md"
-              >
-                Reset all filters
-              </button>
-            </div>
-          ) : (
-            <>
-              {/* Product Grid with 5 columns on desktop */}
-              <div className="w-full">
+          {/* Product Grid Area */}
+          <main className="flex-1 w-full flex flex-col gap-8">
+            {error && (
+              <div className="bg-red-50 text-red-500 p-4 rounded-xl border border-red-200 text-sm">
+                Помилка завантаження товарів: {error}
+              </div>
+            )}
+
+            {filteredProducts.length === 0 ? (
+              <div className="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm flex flex-col items-center">
+                <div className="text-4xl mb-3">🔍</div>
+                <h3 className="text-lg font-bold text-[#104c9a] mb-1">Товарів не знайдено</h3>
+                <p className="text-sm text-gray-500 mb-4">Спробуйте змінити або скинути обрані фільтри</p>
+                <button
+                  onClick={() => dispatch(resetFilters())}
+                  className="px-6 py-2.5 bg-[#104c9a] text-white font-bold rounded-xl text-sm hover:brightness-110"
+                >
+                  Скинути всі фільтри
+                </button>
+              </div>
+            ) : (
+              <>
                 <ProductGrid products={filteredProducts} isLoading={isLoading} />
-              </div>
 
-              {/* Centered Pagination matching Figma < 1 2 3 4 5 > */}
-              <div className="flex justify-center items-center gap-2 py-6">
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors"
-                >
-                  ‹
-                </button>
-                {[1, 2, 3, 4, 5].map((pageNum) => (
-                  <button
-                    key={pageNum}
-                    onClick={() => setCurrentPage(pageNum)}
-                    className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${
-                      currentPage === pageNum
-                        ? 'bg-blue-50 text-[#104c9a] border border-blue-200 font-extrabold shadow-sm'
-                        : 'text-gray-600 hover:bg-gray-100'
-                    }`}
+                {/* Pagination Bar */}
+                <div className="flex justify-center items-center gap-2 mt-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+                  {[1, 2, 3, 4, 5].map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`w-9 h-9 rounded-xl font-bold text-sm transition-all ${
+                        currentPage === pageNum
+                          ? 'bg-[#104c9a] text-white shadow-md'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+                  <button 
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, 5))}
+                    className="px-4 h-9 bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-xl text-sm font-bold ml-2"
                   >
-                    {pageNum}
+                    Вперед →
                   </button>
-                ))}
-                <button
-                  onClick={() => setCurrentPage((prev) => Math.min(prev + 1, 5))}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-500 hover:bg-gray-100 transition-colors"
-                >
-                  ›
-                </button>
-              </div>
-            </>
-          )}
-        </main>
+                </div>
+              </>
+            )}
+          </main>
+        </div>
+
+        {/* Bottom Banner - Start Selling Today (Figma Node 1567:7581 Specs) */}
+        <div className="mt-16 bg-gradient-to-r from-[#104c9a] to-[#071739] rounded-2xl p-8 md:p-12 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-2xl">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">Почніть продавати вже сьогодні! 🚀</h2>
+            <p className="text-sm opacity-90 leading-relaxed">
+              Приєднуйтесь до нашого маркетплейсу EasyBuy та відкривайте нові можливості для вашого бізнесу. 
+              Мільйони покупців вже чекають на ваші товари!
+            </p>
+          </div>
+          <Link href="/register/seller" className="shrink-0">
+            <button className="px-8 py-3.5 bg-gradient-to-b from-[#ff7400] to-[#df4300] text-white font-bold rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all whitespace-nowrap">
+              Стати продавцем
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );
