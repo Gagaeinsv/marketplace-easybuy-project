@@ -5,8 +5,10 @@ export interface FiltersState {
   brands: string[];
   sizes: string[];
   colors: string[];
+  materials: string[];
+  onlyDiscount: boolean;
   rating: number | null;
-  sort: string; // e.g. 'price_asc', 'price_desc', 'newest'
+  sort: string; // 'newest', 'price_asc', 'price_desc', 'popular'
 }
 
 const initialState: FiltersState = {
@@ -14,6 +16,8 @@ const initialState: FiltersState = {
   brands: [],
   sizes: [],
   colors: [],
+  materials: [],
+  onlyDiscount: false,
   rating: null,
   sort: 'newest',
 };
@@ -49,13 +53,24 @@ const filtersSlice = createSlice({
         state.colors.push(color);
       }
     },
+    toggleMaterial: (state, action: PayloadAction<string>) => {
+      const mat = action.payload;
+      if (state.materials.includes(mat)) {
+        state.materials = state.materials.filter((m) => m !== mat);
+      } else {
+        state.materials.push(mat);
+      }
+    },
+    toggleOnlyDiscount: (state) => {
+      state.onlyDiscount = !state.onlyDiscount;
+    },
     setRating: (state, action: PayloadAction<number | null>) => {
       state.rating = action.payload;
     },
     setSort: (state, action: PayloadAction<string>) => {
       state.sort = action.payload;
     },
-    resetFilters: (state) => {
+    resetFilters: () => {
       return initialState;
     },
   },
@@ -66,6 +81,8 @@ export const {
   toggleBrand,
   toggleSize,
   toggleColor,
+  toggleMaterial,
+  toggleOnlyDiscount,
   setRating,
   setSort,
   resetFilters,
