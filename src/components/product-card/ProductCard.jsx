@@ -8,10 +8,9 @@ import { toggleFavorite, selectFavoriteIds } from '@/store/favorites/slice';
 import FavoriteBtn from '@/components/button/favorite-btn/FavoriteBtn.jsx';
 import StarRating from '@/components/star-rating/StarRating.jsx';
 import SmallCartIcon from '@/components/icons/SmallCartIcon.jsx';
-
 import { useLanguage } from '@/context/LanguageContext';
 
-export default function ProductCard({ id, isOnSale, image, title, brand, price, oldPrice, colors }) {
+export default function ProductCard({ id, isOnSale, image, title, brand, price, oldPrice }) {
   const dispatch = useAppDispatch();
   const favoriteIds = useAppSelector(selectFavoriteIds);
   const isFavorite = favoriteIds.includes(id);
@@ -27,7 +26,7 @@ export default function ProductCard({ id, isOnSale, image, title, brand, price, 
     if (id) {
       dispatch(addToCart({
         id,
-        art: id, // Mock SKU
+        art: id,
         name: title,
         price,
         image,
@@ -37,41 +36,67 @@ export default function ProductCard({ id, isOnSale, image, title, brand, price, 
   };
 
   return (
-    <div className="flex flex-col h-full group relative">
+    <div className="flex flex-col h-full bg-white rounded-[16px] border border-[#E2E2E2] p-3 md:p-4 group relative shadow-sm hover:shadow-md transition-shadow">
       <Link href={id ? `/product/${id}` : '#'} className="absolute inset-0 z-0" />
-      <div className="relative w-full aspect-[3/4] md:aspect-[4/5] bg-[#e6e8eb] flex justify-center items-center overflow-hidden transition-all duration-300 pointer-events-none">
+      
+      {/* Image Container (Figma Specs) */}
+      <div className="relative w-full aspect-[4/5] bg-[#E2E4E8] rounded-[12px] flex justify-center items-center overflow-hidden transition-all duration-300 pointer-events-none">
         {isOnSale && (
-          <div className="text-white text-[10px] font-bold py-1 px-3 absolute top-3 left-3 bg-[#ff7400] rounded-[4px] md:text-sm md:top-4 md:left-4 z-10">
-            {t('onSale')}
+          <div className="text-gray-800 text-[11px] font-semibold py-0.5 px-2.5 absolute top-2.5 left-2.5 bg-white border border-gray-200 rounded-full shadow-sm z-10">
+            On Sale
           </div>
         )}
-        <button className="absolute top-3 right-3 md:top-4 md:right-4 z-20 transition-transform duration-300 hover:scale-110 active:scale-95 pointer-events-auto" onClick={handleToggleFavorite}>
+        <button 
+          className="absolute top-2.5 right-2.5 z-20 transition-transform duration-300 hover:scale-110 active:scale-95 pointer-events-auto bg-white/80 p-1.5 rounded-full shadow-sm"
+          onClick={handleToggleFavorite}
+        >
           <FavoriteBtn isFavorite={isFavorite} />
         </button>
-        <Image className="object-contain p-4 mix-blend-multiply transition-transform duration-500 group-hover:scale-110" src={image} alt={title} fill sizes="(max-width: 768px) 50vw, 25vw" />
+        {image ? (
+          <Image className="object-contain p-4 transition-transform duration-500 group-hover:scale-105" src={image} alt={title || 'Product'} fill sizes="(max-width: 768px) 50vw, 20vw" />
+        ) : (
+          <div className="text-gray-400 text-3xl">🖼️</div>
+        )}
       </div>
-      <div className="flex flex-col flex-1 p-3 md:p-5 md:pb-6 z-10 pointer-events-none">
-        <div className="flex gap-0.5 text-gray-400 mb-2 mt-1">
-          <StarRating initialRating={4} activeColor="#104c9a" />
-        </div>
-        <p className="text-xs md:text-sm font-bold text-[#104c9a] mb-1 line-clamp-2 leading-tight pointer-events-auto"><Link href={id ? `/product/${id}` : '#'}>{title}</Link></p>
-        <p className="text-[10px] md:text-xs text-[#6391c8] mb-3">{brand}</p>
 
-        <div className="flex gap-x-2 mb-2">
-          {colors?.map((color, idx) => (
-            <span key={idx} className="w-[14px] h-[14px] md:w-[18px] md:h-[18px] shadow-sm border border-black/10 rounded-sm" style={{ backgroundColor: color }}></span>
-          ))}
+      {/* Product Content (Figma Specs) */}
+      <div className="flex flex-col flex-1 mt-3 z-10 pointer-events-none">
+        {/* Star Rating */}
+        <div className="flex gap-0.5 text-amber-400 mb-1.5">
+          <StarRating initialRating={4} activeColor="#F59E0B" />
         </div>
 
-        <div className="mb-4 mt-auto flex flex-wrap items-baseline gap-x-2">
-          <span className="font-dm font-bold text-[#104c9a] text-lg md:text-xl whitespace-nowrap">$ {price?.toFixed(2).replace('.', ',')}</span>
-          {oldPrice && (
-            <span className="line-through text-[#104c9a] opacity-70 text-xs md:text-sm whitespace-nowrap">{oldPrice?.toFixed(2).replace('.', ',')}</span>
+        {/* Title */}
+        <p className="text-xs md:text-sm text-gray-800 font-normal mb-1 line-clamp-2 leading-tight pointer-events-auto">
+          <Link href={id ? `/product/${id}` : '#'} className="hover:text-[#104c9a]">
+            {title || 'Title Lorem ipsum dolor sit amet, consectetur adipiscing elit'}
+          </Link>
+        </p>
+
+        {/* Subtitle / Metadata */}
+        <p className="text-[11px] text-gray-400 mb-2">
+          {brand || 'Brand, Size, Colour'}
+        </p>
+
+        {/* Price */}
+        <div className="mb-3 mt-auto flex items-baseline gap-x-2">
+          <span className="font-bold text-gray-900 text-sm md:text-base whitespace-nowrap">
+            $ {price ? price.toFixed(0) : '30'}
+          </span>
+          {oldPrice && oldPrice > price && (
+            <span className="line-through text-gray-400 text-xs whitespace-nowrap">
+              $ {oldPrice.toFixed(0)}
+            </span>
           )}
         </div>
-        <button onClick={handleAddToCart} className="bg-gradient-brand flex justify-center items-center py-2 md:py-3 w-full rounded-[4px] hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer mt-auto pointer-events-auto z-20 relative">
-          <SmallCartIcon />
-          <p className="text-white text-xs md:text-sm font-bold ml-2">{t('addToCart')}</p>
+
+        {/* Add to Cart Button (Figma Light Grey Button Specs) */}
+        <button 
+          onClick={handleAddToCart} 
+          className="w-full bg-[#F1F3F5] hover:bg-[#E5E7EB] border border-[#D1D5DB] text-gray-700 text-xs font-semibold py-2 rounded-lg flex justify-center items-center gap-2 transition-colors cursor-pointer pointer-events-auto z-20 relative"
+        >
+          <SmallCartIcon className="w-3.5 h-3.5 text-gray-700" />
+          <span>{t('addToCart') || 'Add to Cart'}</span>
         </button>
       </div>
     </div>
