@@ -28,12 +28,26 @@ export default function CataloguePageWrapper() {
   );
 }
 
+const subcategoriesList = [
+  'Всі товари',
+  'Жіночий одяг',
+  'Чоловічий одяг',
+  'Дитячий одяг',
+  'Взуття',
+  'Аксесуари',
+  'Техніка',
+  'Товари для дому',
+];
+
 function CataloguePage() {
   const dispatch = useAppDispatch();
   const { items: products, isLoading, error } = useAppSelector((state) => state.products);
   const filters = useAppSelector((state) => state.filters);
   const { t } = useLanguage();
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
+  const [selectedSubcategory, setSelectedSubcategory] = useState('Всі товари');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -111,7 +125,24 @@ function CataloguePage() {
           <span className="font-semibold text-[#104c9a]">{t('catalogue') || 'Каталог'}</span>
         </nav>
 
-        {/* Title and Top Controls */}
+        {/* Subcategories Horizontal Scroll Bar (Figma Catalog specs) */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar">
+          {subcategoriesList.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setSelectedSubcategory(cat)}
+              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                selectedSubcategory === cat
+                  ? 'bg-[#104c9a] text-white shadow-sm'
+                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* Title and Top Controls Bar (Figma Specs) */}
         <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-[#104c9a]">
@@ -122,10 +153,23 @@ function CataloguePage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+            {/* Subscribe Searches Button (Figma Specs) */}
+            <button
+              onClick={() => setIsSubscribed(!isSubscribed)}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border flex items-center gap-1.5 ${
+                isSubscribed
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                  : 'bg-blue-50 text-[#104c9a] border-blue-200 hover:bg-blue-100'
+              }`}
+            >
+              <span>{isSubscribed ? '✓ Ви підписані' : '🔔 Підписатися на оновлення'}</span>
+            </button>
+
+            {/* Mobile Filters Trigger */}
             <button
               onClick={() => setIsMobileFiltersOpen(true)}
-              className="lg:hidden bg-[#104c9a] text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm"
+              className="lg:hidden bg-[#104c9a] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 shadow-sm"
             >
               <span>⚙️ Фільтри</span>
               {hasActiveFilters && <span className="w-2 h-2 rounded-full bg-amber-400" />}
@@ -139,7 +183,7 @@ function CataloguePage() {
               <select
                 value={filters.sort}
                 onChange={(e) => dispatch(setSort(e.target.value))}
-                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-sm font-medium text-gray-700 outline-none focus:border-[#104c9a] cursor-pointer"
+                className="bg-gray-50 border border-gray-200 rounded-xl px-3 py-2 text-xs font-medium text-gray-700 outline-none focus:border-[#104c9a] cursor-pointer"
               >
                 <option value="newest">Новинки</option>
                 <option value="popular">За популярністю</option>
@@ -215,9 +259,9 @@ function CataloguePage() {
           )}
 
           {/* Product Grid Area */}
-          <main className="flex-1 w-full">
+          <main className="flex-1 w-full flex flex-col gap-8">
             {error && (
-              <div className="bg-red-50 text-red-500 p-4 rounded-xl mb-6 border border-red-200 text-sm">
+              <div className="bg-red-50 text-red-500 p-4 rounded-xl border border-red-200 text-sm">
                 Помилка завантаження товарів: {error}
               </div>
             )}
@@ -235,9 +279,50 @@ function CataloguePage() {
                 </button>
               </div>
             ) : (
-              <ProductGrid products={filteredProducts} isLoading={isLoading} />
+              <>
+                <ProductGrid products={filteredProducts} isLoading={isLoading} />
+
+                {/* Pagination Controls (Figma Specs) */}
+                <div className="flex justify-center items-center gap-2 mt-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
+                  {[1, 2, 3, 4, 5].map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`w-9 h-9 rounded-xl font-bold text-sm transition-all ${
+                        currentPage === pageNum
+                          ? 'bg-[#104c9a] text-white shadow-md'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+                  <button 
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, 5))}
+                    className="px-4 h-9 bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200 rounded-xl text-sm font-bold ml-2"
+                  >
+                    Вперед →
+                  </button>
+                </div>
+              </>
             )}
           </main>
+        </div>
+
+        {/* Bottom Banner - Start Selling Today (Figma Specs) */}
+        <div className="mt-16 bg-gradient-to-r from-[#104c9a] to-[#071739] rounded-2xl p-8 md:p-12 text-white shadow-lg flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="max-w-2xl">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">Почніть продавати вже сьогодні! 🚀</h2>
+            <p className="text-sm opacity-90 leading-relaxed">
+              Приєднуйтесь до нашого маркетплейсу EasyBuy та відкривайте нові можливості для вашого бізнесу. 
+              Мільйони покупців вже чекають на ваші товари!
+            </p>
+          </div>
+          <Link href="/register/seller" className="shrink-0">
+            <button className="px-8 py-3.5 bg-gradient-to-b from-[#ff7400] to-[#df4300] text-white font-bold rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all whitespace-nowrap">
+              Стати продавцем
+            </button>
+          </Link>
         </div>
       </div>
     </div>
