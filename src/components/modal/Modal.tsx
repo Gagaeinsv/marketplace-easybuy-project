@@ -17,7 +17,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
     setMounted(true);
   }, []);
 
-  //   Esc
+  // Esc
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -32,7 +32,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
     };
   }, [isOpen, onClose]);
 
-  //   Scroll
+  // Scroll lock
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -49,16 +49,17 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40 lg:backdrop-blur-sm"
+      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/50 lg:backdrop-blur-sm p-4"
       onClick={onClose}
     >
       <div
-        className="relative bg-white rounded-2xl p-6 shadow-xl w-[90%] max-w-[500px] lg:max-w-[600px]"
+        className="relative bg-white rounded-2xl p-6 shadow-2xl w-[90%] max-w-[500px] lg:max-w-[600px] max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          className="absolute top-4 right-4 w-6 h-6 text-gray-500 hover:text-red-500 transition-colors"
+          className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-red-50 hover:text-red-500 transition-colors z-20"
           onClick={onClose}
+          aria-label="Close modal"
         >
           <CloseBtnIcon />
         </button>

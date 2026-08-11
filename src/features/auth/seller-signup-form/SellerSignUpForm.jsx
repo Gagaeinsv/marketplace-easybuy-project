@@ -10,7 +10,6 @@ import { register } from '@/store/auth/operations';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import TextInput from '@/components/input/TextInput';
-import { useLanguage } from '@/context/LanguageContext';
 
 const sellerRegistrationSchema = Yup.object().shape({
   storeName: Yup.string()
@@ -22,7 +21,7 @@ const sellerRegistrationSchema = Yup.object().shape({
   fullName: Yup.string()
     .min(3, 'Введіть повне ім’я контактної особи')
     .required('ПІБ контактної особи обов’язкове'),
-  email: Yup.string().email('Некоректний email').required('Email обов’язковий'),
+  email: Yup.string().email('Некоректна електронна пошта').required('Електронна пошта обов’язкова'),
   number: Yup.string()
     .matches(/^\+\d{9,15}$/, 'Введіть номер у міжнародному форматі (напр. +380991234567)')
     .required('Номер телефону обов’язковий'),
@@ -43,7 +42,6 @@ export default function SellerSignUpForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorState, setErrorState] = useState(false);
-  const { t } = useLanguage();
 
   const handleSubmit = async (values, actions) => {
     setIsLoading(true);
@@ -70,8 +68,8 @@ export default function SellerSignUpForm() {
   };
 
   return (
-    <div className="w-full max-w-[420px] mx-auto p-2">
-      <h1 className="text-2xl md:text-3xl font-bold font-dm text-center text-[#104c9a] mb-6">
+    <div className="w-full max-w-[440px] mx-auto p-1">
+      <h1 className="text-2xl md:text-3xl font-bold font-dm text-center text-[#104c9a] mb-5">
         Реєстрація продавця
       </h1>
       <Formik
@@ -110,20 +108,20 @@ export default function SellerSignUpForm() {
 
           <TextInput
             name="email"
-            label={t('emailLabel') || 'Електронна пошта'}
-            placeholder={t('emailPlaceholder') || 'example@email.com'}
+            label="Електронна пошта"
+            placeholder="example@email.com"
           />
 
           <TextInput
             name="number"
-            label={t('phoneNumberLabel') || 'Номер телефону'}
+            label="Номер телефону"
             placeholder="+380991234567"
           />
 
           <TextInput
             name="password"
-            label={t('passwordLabel') || 'Пароль'}
-            placeholder={t('passwordPlaceholder') || '••••••••'}
+            label="Пароль"
+            placeholder="••••••••"
             type="password"
             showPasswordToggle
             showPassword={showPassword}
@@ -133,8 +131,8 @@ export default function SellerSignUpForm() {
 
           <TextInput
             name="confirmPassword"
-            label={t('confirmPasswordLabel') || 'Підтвердіть пароль'}
-            placeholder={t('confirmPasswordPlaceholder') || '••••••••'}
+            label="Підтвердження паролю"
+            placeholder="••••••••"
             type="password"
             showPasswordToggle
             showPassword={showConfirmPassword}
