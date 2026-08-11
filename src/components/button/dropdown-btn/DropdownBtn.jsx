@@ -1,19 +1,19 @@
 'use client';
+
 import { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import Image from 'next/image';
+import Link from 'next/link';
 import { CategoryIcon } from '@/components/icons/CategoryIcons';
 import { catalogData } from '@/data/catalogData';
 
 const DropdownBtn = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeL1, setActiveL1] = useState(catalogData[0]);
-  const [activeL2, setActiveL2] = useState(catalogData[0].children ? catalogData[0].children[0] : null);
+  const [activeL2, setActiveL2] = useState(catalogData[0]?.children ? catalogData[0].children[0] : null);
   const { t } = useLanguage();
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
-
-  // Close menu when clicking outside (on the overlay)
   const closeMenu = () => setIsOpen(false);
 
   return (
@@ -23,7 +23,7 @@ const DropdownBtn = () => {
           className="text-[24px] font-semibold text-white bg-transparent border-2 border-white rounded-lg px-[40px] py-[6px] shadow-[0_0_14px_rgba(201,223,255,0.52)] flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer leading-tight" 
           onClick={toggleDropdown}
         >
-          <span>{t('catalogue')}</span>
+          <span>{t('catalogue') || 'Каталог'}</span>
         </button>
       </div>
 
@@ -36,8 +36,10 @@ const DropdownBtn = () => {
             {/* Column 1: Level 1 Categories */}
             <div className="w-[300px] bg-white border-r border-gray-200 overflow-y-auto py-4 custom-scrollbar">
               {catalogData.map((cat) => (
-                <div 
+                <Link
                   key={cat.id}
+                  href="/catalogue"
+                  onClick={closeMenu}
                   className={`flex items-center justify-between px-6 py-2.5 cursor-pointer transition-colors ${activeL1?.id === cat.id ? 'text-brand-700 bg-brand-50/40 font-medium' : 'text-gray-600 hover:text-brand-700 hover:bg-brand-50/20'}`}
                   onMouseEnter={() => {
                     setActiveL1(cat);
@@ -45,7 +47,7 @@ const DropdownBtn = () => {
                   }}
                 >
                   <div className="flex items-center gap-3">
-                    <CategoryIcon name={cat.icon} className="w-[18px] h-[18px]" />
+                    <CategoryIcon name={cat.icon} className="w-[20px] h-[20px]" />
                     <span className="text-[15px]">{cat.label}</span>
                   </div>
                   {cat.children && (
@@ -53,7 +55,7 @@ const DropdownBtn = () => {
                       <path d="M1 9L5 5L1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   )}
-                </div>
+                </Link>
               ))}
             </div>
 
@@ -61,9 +63,11 @@ const DropdownBtn = () => {
             <div className="w-[300px] border-r border-gray-200 overflow-y-auto py-4 bg-white custom-scrollbar">
               {activeL1?.children ? (
                 activeL1.children.map((child) => (
-                  <div 
+                  <Link 
                     key={child.id}
-                    className={`flex items-center justify-between px-6 py-3 cursor-pointer transition-colors ${activeL2?.id === child.id ? 'text-brand-700' : 'text-gray-700 hover:text-brand-700'}`}
+                    href="/catalogue"
+                    onClick={closeMenu}
+                    className={`flex items-center justify-between px-6 py-3 cursor-pointer transition-colors ${activeL2?.id === child.id ? 'text-brand-700 font-semibold' : 'text-gray-700 hover:text-brand-700'}`}
                     onMouseEnter={() => setActiveL2(child)}
                   >
                     <span className="font-medium text-[15px]">{child.label}</span>
@@ -72,10 +76,10 @@ const DropdownBtn = () => {
                         <path d="M1 9L5 5L1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     )}
-                  </div>
+                  </Link>
                 ))
               ) : (
-                <div className="px-6 py-4 text-gray-400 text-sm italic">No subcategories</div>
+                <div className="px-6 py-4 text-gray-400 text-sm italic">Немає підкатегорій</div>
               )}
             </div>
 
@@ -83,22 +87,28 @@ const DropdownBtn = () => {
             <div className="w-[300px] border-r border-gray-200 overflow-y-auto py-4 bg-white custom-scrollbar">
               {activeL2?.children ? (
                 activeL2.children.map((subchild) => (
-                  <div 
+                  <Link 
                     key={subchild.id}
-                    className="flex items-center px-6 py-2.5 cursor-pointer transition-colors text-gray-600 hover:text-brand-700"
+                    href="/catalogue"
+                    onClick={closeMenu}
+                    className="flex items-center px-6 py-2.5 cursor-pointer transition-colors text-gray-600 hover:text-brand-700 text-[14px]"
                   >
-                    <span className="text-[14px]">{subchild.label}</span>
-                  </div>
+                    <span>{subchild.label}</span>
+                  </Link>
                 ))
               ) : null}
             </div>
 
-            {/* Column 4: Empty space / promotional area */}
-            <div className="flex-1 bg-white p-8 flex items-center justify-center relative">
-              {/* Promotional banners or images */}
-              <div className="relative w-full h-full max-w-[400px] max-h-[400px] opacity-90">
+            {/* Column 4: Promotional area */}
+            <div className="flex-1 bg-white p-8 flex flex-col items-center justify-center relative">
+              <div className="relative w-full h-[320px] max-w-[360px]">
                 <Image src="/images/catalog-illustration.svg" alt="Catalog Promotion" fill className="object-contain" priority />
               </div>
+              <Link href="/catalogue" onClick={closeMenu}>
+                <button className="mt-4 px-8 py-3 bg-[#104c9a] text-white font-bold rounded-xl shadow-md hover:brightness-110 transition-all">
+                  Перейти до всіх товарів
+                </button>
+              </Link>
             </div>
           </div>
         </div>
