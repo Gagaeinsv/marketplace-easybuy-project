@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { CategoryIcon } from '@/components/icons/CategoryIcons';
 import { catalogData } from '@/data/catalogData';
 
@@ -12,23 +13,42 @@ const DropdownBtn = () => {
   const [activeL1, setActiveL1] = useState(catalogData[0]);
   const [activeL2, setActiveL2] = useState(catalogData[0]?.children ? catalogData[0].children[0] : null);
   const { t } = useLanguage();
+  const router = useRouter();
 
-  const toggleDropdown = () => setIsOpen((prev) => !prev);
+  const toggleDropdown = (e) => {
+    e.preventDefault();
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleCatalogueClick = (e) => {
+    e.preventDefault();
+    router.push('/catalogue');
+    setIsOpen(false);
+  };
+
   const closeMenu = () => setIsOpen(false);
 
   return (
     <>
-      <div className="hidden lg:relative lg:block">
-        <button 
+      <div 
+        className="hidden lg:relative lg:block group"
+        onMouseEnter={() => setIsOpen(true)}
+      >
+        <Link 
+          href="/catalogue"
+          onClick={handleCatalogueClick}
           className="text-[24px] font-semibold text-white bg-transparent border-2 border-white rounded-lg px-[40px] py-[6px] shadow-[0_0_14px_rgba(201,223,255,0.52)] flex items-center justify-center hover:bg-white/10 transition-all cursor-pointer leading-tight" 
-          onClick={toggleDropdown}
         >
           <span>{t('catalogue') || 'Каталог'}</span>
-        </button>
+        </Link>
       </div>
 
       {isOpen && (
-        <div className="fixed top-[112px] left-0 w-full h-[calc(100vh-112px)] bg-black/40 z-50 flex justify-center" onClick={closeMenu}>
+        <div 
+          className="fixed top-[112px] left-0 w-full h-[calc(100vh-112px)] bg-black/40 z-50 flex justify-center" 
+          onClick={closeMenu}
+          onMouseLeave={() => setIsOpen(false)}
+        >
           <div 
             className="w-full max-w-[1440px] h-[680px] bg-white flex shadow-2xl relative" 
             onClick={(e) => e.stopPropagation()}
