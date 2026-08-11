@@ -5,6 +5,86 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const LanguageContext = createContext(null);
 
 const dictionary = {
+  ua: {
+    catalogue: 'Каталог',
+    contacts: 'Контакти',
+    sale: 'Розпродаж',
+    searchPlaceholder: 'Пошук товарів, брендів...',
+    searchButton: 'Пошук',
+    signUp: 'Зареєструватися',
+    favorites: 'Обране',
+    myProfile: 'Мій кабінет',
+    logOut: 'Вийти',
+    logIn: 'Увійти',
+    
+    // FooterSeller
+    startSelling: 'Почніть продавати вже сьогодні!',
+    sellSubtitle: 'Приєднуйтесь до нашого маркетплейсу та відкривайте нові можливості для вашого бізнесу!',
+    sellPoint1: 'Мільйони покупців вже чекають на ваші товари;',
+    sellPoint2: 'Збільшуйте продажі та отримуйте більше прибутку;',
+    sellPoint3: 'Зручна панель керування та інструменти зростання',
+    sellButton: 'Стати продавцем',
+    
+    // Footer
+    deliveryPayment: 'Доставка та оплата',
+    guarantee: 'Гарантія',
+    productReturn: 'Повернення товару',
+    support: 'Підтримка',
+    news: 'Новини',
+    marketplaceGuide: 'Гід по маркетплейсу',
+    copyright: '© Easybuy.2024 Всі права захищені',
+    privacyPolicy: 'Політика конфіденційності',
+    userAgreement: 'Угода користувача',
+
+    // MobileMenu
+    close: 'Закрити',
+    back: 'Назад',
+    notEmpty: 'Немає товарів',
+    selectCategory: 'Оберіть категорію →',
+    selectSubcategory: 'Оберіть підкатегорію →',
+
+    // Home Page
+    favoriteBrands: 'Улюблені бренди',
+    ukrainianBrands: 'Українські Бренди',
+    recommendations: 'Рекомендації',
+    shopNow: 'Купити зараз',
+    onSale: 'Знижка',
+    addToCart: 'В кошик',
+    christmasSale: 'Різдвяний розпродаж',
+    upTo33: 'Знижки до -33%',
+    
+    // Promo Slider
+    promoTitle1: 'Літня колекція',
+    promoDesc1: 'Відкрийте для себе найгарячіші купальники сезону',
+    promoTitle2: 'Морський стиль',
+    promoDesc2: 'Ексклюзивний пляжний одяг для вашого ідеального відпочинку',
+
+    // Catalog & Filters
+    home: 'Головна',
+    allProducts: 'Всі товари',
+    allFilters: 'Всі фільтри',
+    price: 'Ціна',
+    brand: 'Бренд',
+    size: 'Розмір',
+    color: 'Колір',
+    material: 'Матеріал',
+    discount: 'Знижка',
+    rating: 'Рейтинг',
+    sort: 'Сортувати',
+    subscribe: 'Підписатися',
+    subscribeSearches: 'Підписатися на оновлення',
+    activeFilters: 'Активні фільтри',
+    resetAll: 'Скинути все',
+    noProductsFound: 'Товарів не знайдено',
+    tryResettingFilters: 'Спробуйте змінити або скинути обрані фільтри',
+    loadingCatalogue: 'Завантаження каталогу...',
+    
+    // Sort Options
+    fromCheapToExpensive: 'Від дешевих до дорогих',
+    fromExpensiveToCheap: 'Від дорогих до дешевих',
+    byPopularity: 'За популярністю',
+    byNovelty: 'За новинками',
+  },
   en: {
     catalogue: 'Catalog',
     contacts: 'Contacts',
@@ -58,307 +138,45 @@ const dictionary = {
     promoDesc1: 'Discover the hottest swimwear of the season',
     promoTitle2: 'Yacht Life',
     promoDesc2: 'Exclusive beachwear for your perfect vacation',
-    promoTitle3: 'Sunset Vibes',
-    promoDesc3: 'Shine bright all summer long',
 
-    // Auth & Modals
-    dontHaveAccount: "Don't have an account?",
-    alreadyHaveAccount: 'Already have an account?',
-    signUpAction: 'Sign up',
-    logInAction: 'Log in',
-    logInTitle: 'Log in',
-    signUpTitle: 'Sign up',
-    signUpSeller: 'as Seller',
-    userAgreementLink: 'User Agreement',
-    privacyPolicyLink: 'Privacy Policy',
-    emailLabel: 'Email',
-    emailPlaceholder: 'Enter Email',
-    passwordLabel: 'Password',
-    passwordPlaceholder: 'Enter password',
-    confirmPasswordLabel: 'Confirm Password',
-    confirmPasswordPlaceholder: 'Confirm Password',
-    phoneNumberLabel: 'Phone number',
-    phoneNumberPlaceholder: 'Enter Phone number',
-    rememberMe: 'Remember Me',
-    forgotPasswordLink: 'Forgot Password?',
-    confirmBtn: 'Confirm',
-    resetPasswordTitle: 'Reset Password',
-    resetPasswordSub: 'Enter your email address and we will send you a link to reset your password.',
-    sendResetLinkBtn: 'Send reset link',
-    backToLoginBtn: 'Back to Login',
-    signUpAsSeller: 'Sign up as Seller',
-    signUpAsBuyer: 'Sign up as Buyer',
-    loadingText: 'Loading...',
-    sendingText: 'Sending...',
-    // Cart
-    cartTitle: 'Cart',
-    emptyCartTitle: 'Your cart is empty',
-    emptyCartDesc: "Looks like you haven't added anything to your cart yet",
-    deleteAll: 'Delete all',
-    itemCount: 'item',
-    itemsCount: 'items',
-    subtotal: 'Subtotal',
+    // Catalog & Filters
+    home: 'Home',
+    allProducts: 'All products',
+    allFilters: 'All Filters',
+    price: 'Price',
+    brand: 'Brand',
+    size: 'Size',
+    color: 'Color',
+    material: 'Material',
     discount: 'Discount',
-    total: 'Total',
-    continueShopping: 'Continue shopping',
-    placeOrder: 'Place an order',
-    allItems: 'All items',
-    summary: 'Summary',
-    
-    // Checkout
-    checkoutTitle: 'Checkout',
-    stepContacts: 'Contacts',
-    stepDelivery: 'Delivery',
-    stepDiscounts: 'Discounts',
-    stepPayment: 'Payment',
-    authTitle: 'Authorization',
-    authDesc: 'Log in or register to get bonus points',
-    loginToCabinet: 'Log in to account',
-    continueWithoutAuth: 'Continue without logging in',
-    nameLabel: 'Name',
-    namePlaceholder: 'Name',
-    nextDelivery: 'Next (Delivery)',
-    
-    // Buyer Profile
-    personalData: 'Personal data',
-    myOrders: 'My orders',
-    cartMenu: 'Cart',
-    message: 'Message',
-    wishlist: 'Wishlist',
-    productsToCompare: 'Products to compare',
-    payment: 'Payment',
-    settings: 'Settings',
-    helpCenter: 'Help Center',
-    userData: 'User data',
-    addressData: 'Address data/delivery address',
-    profileName: 'Name',
-    dateOfBirth: 'Date of birth',
-    profilePhone: 'Phone Number',
-    profileEmail: 'Email',
-    country: 'Country',
-    city: 'City',
-    address: 'Address',
-    saveBtn: 'Save',
-    cancelBtn: 'Cancel',
-    productReturnTitle: 'Product return. Order #',
-    returnReason: 'Return reason',
-    additionalInfo: 'Additional information',
-    selectFromList: 'Select from the list',
-    refundSuccessTitle: 'Return request successfully sent!',
-    refundSuccessDesc: 'A seller will contact you shortly.',
-    itemsAddedToCart: 'Items successfully added to cart!',
-    leaveReviewTitle: 'Leave a review. Order #',
-    yourRating: 'Your rating',
-    writeReview: 'Write your review',
-    sendReviewBtn: 'Send review',
-    reviewSuccessTitle: 'Thank you for your feedback!',
-    reviewSuccessDesc: 'Your review has been successfully submitted and will be published soon.',
-    // Messages
-    messagesAll: 'All',
-    messagesUnread: 'Unread',
-    messagesArchived: 'Archived',
-    messagesSaved: 'Saved',
-    noMessages: 'You have no messages yet.',
-    markAsUnread: 'Mark as unread',
-    archiveDiscussion: 'Archive',
-    deleteDiscussion: 'Delete discussion',
-    toFixDiscussion: 'To fix',
-    saveDiscussion: 'Saved',
-    messagePlaceholder: 'Message',
-    sendAMessage: 'Send a message',
-    // Delete Modal
-    deleteItemTitle: 'Delete item?',
-    deleteItemDesc: 'The item will be removed from the cart. If you change your mind, you can always add it again.',
-    deleteItemYes: 'Yes, delete',
-    deleteItemNo: 'No, keep',
-    // Wishlist
-    wishlistEmptyTitle: 'Your wish list is currently empty.',
-    wishlistEmptyDesc: 'Find your favorite positions and add them to your wishlist to come back to them later.',
-    catalogueBtn: 'Catalogue',
-    shareWishlist: 'Share your wishlist',
-  },
-  ua: {
-    catalogue: 'Каталог',
-    contacts: 'Контакти',
-    sale: 'Розпродаж',
-    searchPlaceholder: 'Пошук товарів, магазинів, замовлень...',
-    searchButton: 'Пошук',
-    signUp: 'Реєстрація',
-    favorites: 'Улюблені',
-    myProfile: 'Мій кабінет',
-    logOut: 'Вийти',
-    logIn: 'Увійти',
-    
-    // FooterSeller
-    startSelling: 'Почніть продавати вже сьогодні!',
-    sellSubtitle: 'Приєднуйтесь до нашого маркетплейсу та відкрийте нові можливості для бізнесу!',
-    sellPoint1: 'Мільйони покупців чекають на ваші товари;',
-    sellPoint2: 'Збільшуйте продажі та отримуйте більше прибутку;',
-    sellPoint3: 'Зручна панель управління та інструменти зростання',
-    sellButton: 'Почати продавати',
-    
-    // Footer
-    deliveryPayment: 'Доставка та оплата',
-    guarantee: 'Гарантія',
-    productReturn: 'Повернення товару',
-    support: 'Підтримка',
-    news: 'Новини',
-    marketplaceGuide: 'Гід покупця',
-    copyright: '© Easybuy.2024 Всі права захищені',
-    privacyPolicy: 'Політика приватності',
-    userAgreement: 'Угода користувача',
+    rating: 'Rating',
+    sort: 'Sort',
+    subscribe: 'Subscribe',
+    subscribeSearches: 'Subscribe your searches',
+    activeFilters: 'Active filters',
+    resetAll: 'Reset all',
+    noProductsFound: 'No products found',
+    tryResettingFilters: 'Try resetting or adjusting your selected filters',
+    loadingCatalogue: 'Loading catalogue...',
 
-    // MobileMenu
-    close: 'Закрити',
-    back: 'Назад',
-    notEmpty: 'Немає елементів',
-    selectCategory: 'Виберіть категорію →',
-    selectSubcategory: 'Виберіть підкатегорію →',
-
-    // Home Page
-    favoriteBrands: 'Улюблені бренди',
-    ukrainianBrands: 'Українські бренди',
-    recommendations: 'Рекомендації',
-    shopNow: 'Дивитись всі',
-    onSale: 'Розпродаж',
-    addToCart: 'У кошик',
-    christmasSale: 'Різдвяний розпродаж',
-    upTo33: 'Знижки до -33%',
-    
-    // Promo Slider
-    promoTitle1: 'Літня колекція',
-    promoDesc1: 'Відкрийте для себе найгарячіші купальники сезону',
-    promoTitle2: 'Життя на яхті',
-    promoDesc2: 'Ексклюзивний пляжний одяг для ідеальної відпустки',
-    promoTitle3: 'Захід сонця',
-    promoDesc3: 'Сяйте яскраво все літо',
-
-    // Auth & Modals
-    dontHaveAccount: 'Немає акаунту?',
-    alreadyHaveAccount: 'Вже є акаунт?',
-    signUpAction: 'Зареєструватися',
-    logInAction: 'Увійти',
-    logInTitle: 'Вхід',
-    signUpTitle: 'Реєстрація',
-    signUpSeller: 'як продавець',
-    userAgreementLink: 'Угода користувача',
-    privacyPolicyLink: 'Політика приватності',
-    emailLabel: 'Email',
-    emailPlaceholder: 'Введіть Email',
-    passwordLabel: 'Пароль',
-    passwordPlaceholder: 'Введіть пароль',
-    confirmPasswordLabel: 'Підтвердження паролю',
-    confirmPasswordPlaceholder: 'Підтвердження паролю',
-    phoneNumberLabel: 'Номер телефону',
-    phoneNumberPlaceholder: 'Введіть номер телефону',
-    rememberMe: 'Запам\'ятати мене',
-    forgotPasswordLink: 'Забули пароль?',
-    confirmBtn: 'Підтвердити',
-    resetPasswordTitle: 'Скинути пароль',
-    resetPasswordSub: 'Введіть адресу вашої електронної пошти, і ми надішлемо вам посилання для скидання паролю.',
-    sendResetLinkBtn: 'Надіслати посилання',
-    backToLoginBtn: 'Назад до входу',
-    signUpAsSeller: 'Зареєструватися як продавець',
-    signUpAsBuyer: 'Зареєструватися як покупець',
-    loadingText: 'Завантаження...',
-    sendingText: 'Надсилання...',
-    
-    // Cart
-    cartTitle: 'Кошик',
-    emptyCartTitle: 'Ваш кошик порожній',
-    emptyCartDesc: 'Схоже, ви ще нічого не додали до свого кошика',
-    deleteAll: 'Видалити все',
-    itemCount: 'товар',
-    itemsCount: 'товари',
-    subtotal: 'Підсумок',
-    discount: 'Знижка',
-    total: 'Разом',
-    continueShopping: 'Продовжити покупки',
-    placeOrder: 'Оформити замовлення',
-    allItems: 'Усі товари',
-    summary: 'Підсумок',
-    
-    // Checkout
-    checkoutTitle: 'Замовлення',
-    stepContacts: 'Контакти',
-    stepDelivery: 'Доставка',
-    stepDiscounts: 'Знижки',
-    stepPayment: 'Оплата',
-    authTitle: 'Авторизація',
-    authDesc: 'Увійдіть або зареєструйтесь у власний кабінет, щоб отримати бонусні бали',
-    loginToCabinet: 'Увійти у власний кабінет',
-    continueWithoutAuth: 'Продовжити без авторизації',
-    nameLabel: 'Ім\'я',
-    namePlaceholder: 'Ім\'я',
-    nextDelivery: 'Далі (Доставка)',
-    
-    // Buyer Profile
-    personalData: 'Особисті дані',
-    myOrders: 'Мої замовлення',
-    cartMenu: 'Кошик',
-    message: 'Повідомлення',
-    wishlist: 'Список бажань',
-    productsToCompare: 'Порівняння товарів',
-    payment: 'Оплата',
-    settings: 'Налаштування',
-    helpCenter: 'Довідковий центр',
-    userData: 'Дані користувача',
-    addressData: 'Дані адреси / адреса доставки',
-    profileName: 'Ім\'я',
-    dateOfBirth: 'Дата народження',
-    profilePhone: 'Номер телефону',
-    profileEmail: 'Електронна пошта',
-    country: 'Країна',
-    city: 'Місто',
-    address: 'Адреса',
-    saveBtn: 'Зберегти',
-    cancelBtn: 'Скасувати',
-    productReturnTitle: 'Повернення товару. Замовлення #',
-    returnReason: 'Причина повернення',
-    additionalInfo: 'Додаткова інформація',
-    selectFromList: 'Виберіть зі списку',
-    refundSuccessTitle: 'Заявку на повернення успішно надіслано!',
-    refundSuccessDesc: 'Продавець зв\'яжеться з вами найближчим часом.',
-    itemsAddedToCart: 'Товари успішно додані до кошика!',
-    leaveReviewTitle: 'Залишити відгук. Замовлення #',
-    yourRating: 'Ваша оцінка',
-    writeReview: 'Напишіть ваш відгук',
-    sendReviewBtn: 'Надіслати відгук',
-    reviewSuccessTitle: 'Дякуємо за ваш відгук!',
-    reviewSuccessDesc: 'Ваш відгук успішно надіслано, і він буде опублікований найближчим часом.',
-    // Messages
-    messagesAll: 'Всі',
-    messagesUnread: 'Непрочитані',
-    messagesArchived: 'В архів',
-    messagesSaved: 'Збережене',
-    noMessages: 'У вас ще немає повідомлень.',
-    markAsUnread: 'Позначити як непрочитане',
-    archiveDiscussion: 'В архів',
-    deleteDiscussion: 'Видалити діалог',
-    toFixDiscussion: 'Закріпити',
-    saveDiscussion: 'Збережене',
-    messagePlaceholder: 'Повідомлення',
-    sendAMessage: 'Написати повідомлення',
-    // Delete Modal
-    deleteItemTitle: 'Видалити товар?',
-    deleteItemDesc: 'Товар буде видалено з кошика. Якщо передумаєте, його завжди можна додати знову.',
-    deleteItemYes: 'Так, видалити',
-    deleteItemNo: 'Ні, залишити',
-    // Wishlist
-    wishlistEmptyTitle: 'Ваш список улюблених товарів наразі порожній.',
-    wishlistEmptyDesc: 'Знайдіть улюблені товари та додайте їх до списку, щоб повернутися до них пізніше.',
-    catalogueBtn: 'Каталог',
-    shareWishlist: 'Поділитись',
+    // Sort Options
+    fromCheapToExpensive: 'from cheap to expensive',
+    fromExpensiveToCheap: 'from expensive to cheap',
+    byPopularity: 'by popularity',
+    byNovelty: 'by novelty',
   }
 };
 
 export const LanguageProvider = ({ children }) => {
-  const [locale, setLocale] = useState('en');
+  const [locale, setLocale] = useState('ua');
 
   useEffect(() => {
     const savedLocale = localStorage.getItem('locale');
     if (savedLocale === 'ua' || savedLocale === 'en') {
       setLocale(savedLocale);
+    } else {
+      setLocale('ua');
+      localStorage.setItem('locale', 'ua');
     }
   }, []);
 
@@ -370,7 +188,7 @@ export const LanguageProvider = ({ children }) => {
   };
 
   const t = (key) => {
-    return dictionary[locale]?.[key] || key;
+    return dictionary[locale]?.[key] || dictionary['ua']?.[key] || key;
   };
 
   return (
@@ -384,9 +202,9 @@ export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
     return {
-      locale: 'en',
+      locale: 'ua',
       setLocale: () => {},
-      t: (key) => dictionary['en']?.[key] || key,
+      t: (key) => dictionary['ua']?.[key] || key,
     };
   }
   return context;

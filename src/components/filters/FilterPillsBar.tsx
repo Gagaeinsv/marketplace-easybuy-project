@@ -17,15 +17,15 @@ import { useLanguage } from '@/context/LanguageContext';
 const availableBrands = ['Nike', 'Puma', 'Zara', 'Adidas', 'A New Day', 'Wild Fable', 'Mango', 'H&M', 'Levi\'s'];
 const availableSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 const availableColors = [
-  { id: 'black', name: 'Black', hex: '#1E1E1E' },
-  { id: 'white', name: 'White', hex: '#FFFFFF', border: true },
-  { id: 'blue', name: 'Blue', hex: '#104C9A' },
-  { id: 'red', name: 'Red', hex: '#E53E3E' },
-  { id: 'beige', name: 'Beige', hex: '#E5D3B3' },
-  { id: 'green', name: 'Green', hex: '#2F855A' },
-  { id: 'grey', name: 'Grey', hex: '#718096' },
+  { id: 'black', name: 'Чорний', hex: '#1E1E1E' },
+  { id: 'white', name: 'Білий', hex: '#FFFFFF', border: true },
+  { id: 'blue', name: 'Синій', hex: '#104C9A' },
+  { id: 'red', name: 'Червоний', hex: '#E53E3E' },
+  { id: 'beige', name: 'Бежевий', hex: '#E5D3B3' },
+  { id: 'green', name: 'Зелений', hex: '#2F855A' },
+  { id: 'grey', name: 'Сірий', hex: '#718096' },
 ];
-const availableMaterials = ['Cotton', 'Leather', 'Wool', 'Silk', 'Polyester'];
+const availableMaterials = ['Бавовна', 'Шкіра', 'Вовна', 'Шовк', 'Поліестер'];
 
 export default function FilterPillsBar() {
   const dispatch = useAppDispatch();
@@ -73,7 +73,7 @@ export default function FilterPillsBar() {
               : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
           }`}
         >
-          <span>⚙️ All Filters</span>
+          <span>⚙️ {t('allFilters') || 'Всі фільтри'}</span>
         </button>
 
         {/* Price Pill */}
@@ -85,7 +85,7 @@ export default function FilterPillsBar() {
               : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
           }`}
         >
-          <span>Price ▾</span>
+          <span>{t('price') || 'Ціна'} ▾</span>
         </button>
 
         {/* Brand Pill */}
@@ -97,7 +97,7 @@ export default function FilterPillsBar() {
               : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
           }`}
         >
-          <span>Brand {filters.brands.length ? `(${filters.brands.length})` : ''} ▾</span>
+          <span>{t('brand') || 'Бренд'} {filters.brands.length ? `(${filters.brands.length})` : ''} ▾</span>
         </button>
 
         {/* Size Pill */}
@@ -109,7 +109,7 @@ export default function FilterPillsBar() {
               : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
           }`}
         >
-          <span>Size {filters.sizes.length ? `(${filters.sizes.length})` : ''} ▾</span>
+          <span>{t('size') || 'Розмір'} {filters.sizes.length ? `(${filters.sizes.length})` : ''} ▾</span>
         </button>
 
         {/* Color Pill */}
@@ -121,7 +121,7 @@ export default function FilterPillsBar() {
               : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
           }`}
         >
-          <span>Color {filters.colors.length ? `(${filters.colors.length})` : ''} ▾</span>
+          <span>{t('color') || 'Колір'} {filters.colors.length ? `(${filters.colors.length})` : ''} ▾</span>
         </button>
 
         {/* Material Pill */}
@@ -133,7 +133,7 @@ export default function FilterPillsBar() {
               : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
           }`}
         >
-          <span>Material {filters.materials.length ? `(${filters.materials.length})` : ''} ▾</span>
+          <span>{t('material') || 'Матеріал'} {filters.materials.length ? `(${filters.materials.length})` : ''} ▾</span>
         </button>
 
         {/* Discount Pill */}
@@ -145,7 +145,7 @@ export default function FilterPillsBar() {
               : 'bg-white text-gray-700 border-gray-300 hover:border-amber-500'
           }`}
         >
-          <span>Discount 🏷️</span>
+          <span>{t('discount') || 'Знижка'} 🏷️</span>
         </button>
 
         {/* Rating Pill */}
@@ -157,7 +157,7 @@ export default function FilterPillsBar() {
               : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
           }`}
         >
-          <span>Rating {filters.rating ? `(${filters.rating}+★)` : ''} ▾</span>
+          <span>{t('rating') || 'Рейтинг'} {filters.rating ? `(${filters.rating}+★)` : ''} ▾</span>
         </button>
 
         {/* Reset All */}
@@ -166,7 +166,7 @@ export default function FilterPillsBar() {
             onClick={() => dispatch(resetFilters())}
             className="text-xs text-red-500 font-bold hover:underline ml-2 whitespace-nowrap"
           >
-            Reset
+            {t('resetAll') || 'Скинути'}
           </button>
         )}
       </div>
@@ -177,13 +177,13 @@ export default function FilterPillsBar() {
           {/* Price Popover */}
           {activeDropdown === 'price' && (
             <div className="flex flex-col gap-3">
-              <h4 className="font-bold text-sm text-[#104c9a]">Price Range ($)</h4>
+              <h4 className="font-bold text-sm text-[#104c9a]">Діапазон цін (₴)</h4>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
                   value={filters.price.min}
                   onChange={(e) => handlePriceChange(e, 'min')}
-                  placeholder="Min"
+                  placeholder="Мін"
                   className="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-xs outline-none focus:border-[#104c9a]"
                 />
                 <span>-</span>
@@ -191,7 +191,7 @@ export default function FilterPillsBar() {
                   type="number"
                   value={filters.price.max}
                   onChange={(e) => handlePriceChange(e, 'max')}
-                  placeholder="Max"
+                  placeholder="Макс"
                   className="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-xs outline-none focus:border-[#104c9a]"
                 />
               </div>
@@ -201,12 +201,12 @@ export default function FilterPillsBar() {
           {/* Brand Popover */}
           {activeDropdown === 'brand' && (
             <div className="flex flex-col gap-3">
-              <h4 className="font-bold text-sm text-[#104c9a]">Filter by Brand</h4>
+              <h4 className="font-bold text-sm text-[#104c9a]">Фільтр за брендом</h4>
               <input
                 type="text"
                 value={brandSearch}
                 onChange={(e) => setBrandSearch(e.target.value)}
-                placeholder="Search brand..."
+                placeholder="Пошук бренду..."
                 className="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-xs outline-none focus:border-[#104c9a]"
               />
               <div className="flex flex-col gap-2 max-h-48 overflow-y-auto pr-1">
@@ -228,7 +228,7 @@ export default function FilterPillsBar() {
           {/* Size Popover */}
           {activeDropdown === 'size' && (
             <div className="flex flex-col gap-3">
-              <h4 className="font-bold text-sm text-[#104c9a]">Filter by Size</h4>
+              <h4 className="font-bold text-sm text-[#104c9a]">Фільтр за розміром</h4>
               <div className="flex flex-wrap gap-2">
                 {availableSizes.map((size) => (
                   <button
@@ -250,7 +250,7 @@ export default function FilterPillsBar() {
           {/* Color Popover */}
           {activeDropdown === 'color' && (
             <div className="flex flex-col gap-3">
-              <h4 className="font-bold text-sm text-[#104c9a]">Filter by Color</h4>
+              <h4 className="font-bold text-sm text-[#104c9a]">Фільтр за кольором</h4>
               <div className="flex flex-wrap gap-2.5">
                 {availableColors.map((color) => {
                   const isSelected = filters.colors.includes(color.id);
@@ -275,7 +275,7 @@ export default function FilterPillsBar() {
           {/* Material Popover */}
           {activeDropdown === 'material' && (
             <div className="flex flex-col gap-3">
-              <h4 className="font-bold text-sm text-[#104c9a]">Filter by Material</h4>
+              <h4 className="font-bold text-sm text-[#104c9a]">Фільтр за матеріалом</h4>
               <div className="flex flex-col gap-2">
                 {availableMaterials.map((mat) => (
                   <label key={mat} className="flex items-center gap-2 text-xs cursor-pointer hover:text-[#104c9a]">
@@ -295,7 +295,7 @@ export default function FilterPillsBar() {
           {/* Rating Popover */}
           {activeDropdown === 'rating' && (
             <div className="flex flex-col gap-3">
-              <h4 className="font-bold text-sm text-[#104c9a]">Filter by Rating</h4>
+              <h4 className="font-bold text-sm text-[#104c9a]">Фільтр за рейтингом</h4>
               <div className="flex flex-col gap-2">
                 {[4, 3].map((stars) => (
                   <button
@@ -305,29 +305,29 @@ export default function FilterPillsBar() {
                       filters.rating === stars ? 'bg-amber-50 border-amber-300 font-bold' : 'border-gray-200 hover:border-amber-300'
                     }`}
                   >
-                    <span className="text-amber-500">★ {stars}.0+ stars</span>
+                    <span className="text-amber-500">★ {stars}.0+ зірок</span>
                   </button>
                 ))}
               </div>
             </div>
           )}
 
-          {/* All Filters Popover (Summary) */}
+          {/* All Filters Popover */}
           {activeDropdown === 'all' && (
             <div className="flex flex-col gap-4 max-h-96 overflow-y-auto pr-1">
-              <h4 className="font-bold text-base text-[#104c9a] border-b pb-2">All Filters</h4>
+              <h4 className="font-bold text-base text-[#104c9a] border-b pb-2">Всі фільтри</h4>
               
               <div>
-                <p className="font-bold text-xs text-gray-700 mb-1">Price Range ($)</p>
+                <p className="font-bold text-xs text-gray-700 mb-1">Діапазон цін (₴)</p>
                 <div className="flex items-center gap-2">
-                  <input type="number" value={filters.price.min} onChange={(e) => handlePriceChange(e, 'min')} className="w-full border rounded px-2 py-1 text-xs" placeholder="Min" />
+                  <input type="number" value={filters.price.min} onChange={(e) => handlePriceChange(e, 'min')} className="w-full border rounded px-2 py-1 text-xs" placeholder="Мін" />
                   <span>-</span>
-                  <input type="number" value={filters.price.max} onChange={(e) => handlePriceChange(e, 'max')} className="w-full border rounded px-2 py-1 text-xs" placeholder="Max" />
+                  <input type="number" value={filters.price.max} onChange={(e) => handlePriceChange(e, 'max')} className="w-full border rounded px-2 py-1 text-xs" placeholder="Макс" />
                 </div>
               </div>
 
               <div>
-                <p className="font-bold text-xs text-gray-700 mb-1">Brands</p>
+                <p className="font-bold text-xs text-gray-700 mb-1">Бренди</p>
                 <div className="flex flex-wrap gap-1">
                   {availableBrands.map((b) => (
                     <button
@@ -342,8 +342,8 @@ export default function FilterPillsBar() {
               </div>
 
               <div className="pt-2 border-t flex justify-between">
-                <button onClick={() => dispatch(resetFilters())} className="text-xs text-red-500 font-bold hover:underline">Reset All</button>
-                <button onClick={() => setActiveDropdown(null)} className="px-4 py-1.5 bg-[#104c9a] text-white font-bold rounded-lg text-xs">Apply</button>
+                <button onClick={() => dispatch(resetFilters())} className="text-xs text-red-500 font-bold hover:underline">Скинути все</button>
+                <button onClick={() => setActiveDropdown(null)} className="px-4 py-1.5 bg-[#104c9a] text-white font-bold rounded-lg text-xs">Застосувати</button>
               </div>
             </div>
           )}

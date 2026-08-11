@@ -22,7 +22,7 @@ import Link from 'next/link';
 
 export default function CataloguePageWrapper() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-[#104c9a] font-bold">Loading catalogue...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-[#104c9a] font-bold">Завантаження каталогу...</div>}>
       <CataloguePage />
     </Suspense>
   );
@@ -103,42 +103,40 @@ function CataloguePage() {
 
   return (
     <div className="bg-[#F8F9FA] min-h-screen pb-16">
-      {/* Top Filter Bar Strip matching 100% Figma Node 1567:7581 Render */}
+      {/* Top Filter Bar Strip */}
       <div className="bg-[#E9EEF4] border-b border-gray-200 py-3 mb-8">
         <div className="container mx-auto px-4 max-w-[1440px] flex flex-col gap-3">
           {/* Row 1: Breadcrumbs, Sort, and Subscribe */}
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            {/* Breadcrumbs */}
+            {/* Breadcrumbs - Default "Головна / Каталог" */}
             <nav className="flex items-center gap-2 text-xs text-gray-600 font-normal">
               <Link href="/" className="hover:text-[#104c9a]">
-                Clothes for Women
+                {t('home') || 'Головна'}
               </Link>
               <span>/</span>
-              <span>Outwear</span>
-              <span>/</span>
-              <span className="font-semibold text-gray-800">Jackets</span>
+              <span className="font-semibold text-gray-800">{t('catalogue') || 'Каталог'}</span>
             </nav>
 
             {/* Right Controls: Sort & Subscribe */}
             <div className="flex items-center gap-6 w-full md:w-auto justify-between md:justify-end">
               {/* Sort Select */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-600 font-semibold">Sort:</span>
+                <span className="text-xs text-gray-600 font-semibold">{t('sort') || 'Сортувати'}:</span>
                 <select
                   value={filters.sort}
                   onChange={(e) => dispatch(setSort(e.target.value))}
                   className="bg-white border border-gray-300 rounded-md px-3 py-1 text-xs text-gray-700 outline-none focus:border-[#104c9a] cursor-pointer shadow-sm"
                 >
-                  <option value="price_asc">from cheap to expensive</option>
-                  <option value="price_desc">from expensive to cheap</option>
-                  <option value="popular">by popularity</option>
-                  <option value="newest">by novelty</option>
+                  <option value="price_asc">{t('fromCheapToExpensive') || 'Від дешевих до дорогих'}</option>
+                  <option value="price_desc">{t('fromExpensiveToCheap') || 'Від дорогих до дешевих'}</option>
+                  <option value="popular">{t('byPopularity') || 'За популярністю'}</option>
+                  <option value="newest">{t('byNovelty') || 'За новинками'}</option>
                 </select>
               </div>
 
               {/* Subscribe your searches */}
               <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-600 font-medium hidden sm:inline">Subscribe your searches</span>
+                <span className="text-xs text-gray-600 font-medium hidden sm:inline">{t('subscribeSearches') || 'Підписатися на оновлення'}</span>
                 <button
                   onClick={() => setIsSubscribed(!isSubscribed)}
                   className={`px-3 py-1 rounded-md text-xs font-medium transition-all border flex items-center gap-1.5 ${
@@ -147,7 +145,7 @@ function CataloguePage() {
                       : 'bg-white text-gray-700 border-gray-300 hover:border-[#104c9a]'
                   }`}
                 >
-                  <span>{isSubscribed ? '✓ Subscribed' : '🔔 Subscribe'}</span>
+                  <span>{isSubscribed ? '✓ Ви підписані' : `🔔 ${t('subscribe') || 'Підписатися'}`}</span>
                 </button>
               </div>
             </div>
@@ -163,14 +161,14 @@ function CataloguePage() {
         {/* Active Filter Tags Chips */}
         {hasActiveFilters && (
           <div className="flex flex-wrap items-center gap-2 mb-6 bg-white p-3 rounded-xl border border-gray-200 shadow-sm">
-            <span className="text-xs font-bold text-gray-500 mr-1">Active filters:</span>
+            <span className="text-xs font-bold text-gray-500 mr-1">{t('activeFilters') || 'Активні фільтри'}:</span>
             {filters.brands.map((b) => (
               <span
                 key={b}
                 onClick={() => dispatch(toggleBrand(b))}
                 className="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 cursor-pointer hover:bg-gray-200"
               >
-                Brand: {b} <span className="font-bold">✕</span>
+                {t('brand') || 'Бренд'}: {b} <span className="font-bold">✕</span>
               </span>
             ))}
             {filters.sizes.map((s) => (
@@ -179,7 +177,7 @@ function CataloguePage() {
                 onClick={() => dispatch(toggleSize(s))}
                 className="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 cursor-pointer hover:bg-gray-200"
               >
-                Size: {s} <span className="font-bold">✕</span>
+                {t('size') || 'Розмір'}: {s} <span className="font-bold">✕</span>
               </span>
             ))}
             {filters.colors.map((c) => (
@@ -188,7 +186,7 @@ function CataloguePage() {
                 onClick={() => dispatch(toggleColor(c))}
                 className="bg-gray-100 text-gray-800 border border-gray-300 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 cursor-pointer hover:bg-gray-200"
               >
-                Color: {c} <span className="font-bold">✕</span>
+                {t('color') || 'Колір'}: {c} <span className="font-bold">✕</span>
               </span>
             ))}
             {filters.onlyDiscount && (
@@ -196,36 +194,36 @@ function CataloguePage() {
                 onClick={() => dispatch(toggleOnlyDiscount())}
                 className="bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1 cursor-pointer hover:bg-amber-100"
               >
-                On Sale 🏷️ <span className="font-bold">✕</span>
+                {t('discount') || 'Знижка'} 🏷️ <span className="font-bold">✕</span>
               </span>
             )}
             <button
               onClick={() => dispatch(resetFilters())}
               className="text-xs text-red-500 font-bold hover:underline ml-auto"
             >
-              Reset all
+              {t('resetAll') || 'Скинути все'}
             </button>
           </div>
         )}
 
-        {/* 5-Column Product Grid (100% Figma Node 1567:7581 Specs) */}
+        {/* 5-Column Product Grid */}
         <main className="w-full flex flex-col gap-8">
           {error && (
             <div className="bg-red-50 text-red-500 p-4 rounded-xl border border-red-200 text-sm">
-              Error loading products: {error}
+              Помилка завантаження товарів: {error}
             </div>
           )}
 
           {filteredProducts.length === 0 ? (
             <div className="bg-white rounded-2xl p-16 text-center border border-gray-200 shadow-sm flex flex-col items-center">
               <div className="text-4xl mb-3">🔍</div>
-              <h3 className="text-lg font-bold text-gray-800 mb-1">No products found</h3>
-              <p className="text-sm text-gray-500 mb-4">Try resetting or adjusting your selected filters</p>
+              <h3 className="text-lg font-bold text-gray-800 mb-1">{t('noProductsFound') || 'Товарів не знайдено'}</h3>
+              <p className="text-sm text-gray-500 mb-4">{t('tryResettingFilters') || 'Спробуйте змінити або скинути обрані фільтри'}</p>
               <button
                 onClick={() => dispatch(resetFilters())}
                 className="px-6 py-2.5 bg-[#104c9a] text-white font-bold rounded-xl text-xs hover:brightness-110 shadow-md"
               >
-                Reset all filters
+                {t('resetAll') || 'Скинути всі фільтри'}
               </button>
             </div>
           ) : (
@@ -233,7 +231,7 @@ function CataloguePage() {
               {/* Product Grid */}
               <ProductGrid products={filteredProducts} isLoading={isLoading} />
 
-              {/* Centered Pagination matching Figma Node 1567:7581 < 1 2 3 4 5 > */}
+              {/* Centered Pagination < 1 2 3 4 5 > */}
               <div className="flex justify-center items-center gap-2 py-8">
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
