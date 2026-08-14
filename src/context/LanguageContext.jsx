@@ -36,6 +36,29 @@ const dictionary = {
     registrationError: 'Сталася помилка під час реєстрації',
     loadingText: 'Завантаження...',
 
+    // Buyer Profile Panel Sidebar
+    personalData: 'Особисті дані',
+    myOrders: 'Мої замовлення',
+    cartMenu: 'Кошик',
+    message: 'Повідомлення',
+    wishlist: 'Список бажань',
+    productsToCompare: 'Порівняння товарів',
+    payment: 'Оплата',
+    settings: 'Налаштування',
+
+    // Message Page Tabs & Content
+    messagesAll: 'Всі повідомлення',
+    messagesUnread: 'Непрочитані',
+    messagesArchived: 'Архів',
+    messagesSaved: 'Збережені',
+    noMessages: 'Немає повідомлень',
+    sendAMessage: 'Надіслати повідомлення',
+    markAsUnread: 'Позначити як непрочитане',
+    archiveDiscussion: 'Архівувати діалог',
+    deleteDiscussion: 'Видалити діалог',
+    toFixDiscussion: 'Закріпити діалог',
+    saveDiscussion: 'Зберегти діалог',
+
     // FooterSeller
     startSelling: 'Почніть продавати вже сьогодні!',
     sellSubtitle: 'Приєднуйтесь до нашого маркетплейсу та відкривайте нові можливості для вашого бізнесу!',
@@ -100,7 +123,7 @@ const dictionary = {
     
     // Sort Options
     fromCheapToExpensive: 'Від дешевих до дорогих',
-    fromExpensiveToCheap: 'Від дорогих до дорогих',
+    fromExpensiveToCheap: 'Від дорогих до дешевих',
     byPopularity: 'За популярністю',
     byNovelty: 'За новинками',
   },
@@ -134,6 +157,29 @@ const dictionary = {
     registrationFailed: 'Registration failed.',
     registrationError: 'An unknown error occurred during registration',
     loadingText: 'Loading...',
+
+    // Buyer Profile Panel Sidebar
+    personalData: 'Personal Data',
+    myOrders: 'My Orders',
+    cartMenu: 'Cart',
+    message: 'Messages',
+    wishlist: 'Wishlist',
+    productsToCompare: 'Compare',
+    payment: 'Payment',
+    settings: 'Settings',
+
+    // Message Page Tabs & Content
+    messagesAll: 'All',
+    messagesUnread: 'Unread',
+    messagesArchived: 'Archived',
+    messagesSaved: 'Saved',
+    noMessages: 'No messages',
+    sendAMessage: 'Send a message',
+    markAsUnread: 'Mark as unread',
+    archiveDiscussion: 'Archive discussion',
+    deleteDiscussion: 'Delete discussion',
+    toFixDiscussion: 'Pin discussion',
+    saveDiscussion: 'Save discussion',
     
     // FooterSeller
     startSelling: 'Start selling today!',
