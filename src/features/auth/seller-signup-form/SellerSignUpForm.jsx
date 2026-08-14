@@ -10,27 +10,22 @@ import { register } from '@/store/auth/operations';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import TextInput from '@/components/input/TextInput';
+import Link from 'next/link';
 
 const sellerRegistrationSchema = Yup.object().shape({
   storeName: Yup.string()
     .min(2, 'Назва магазину має містити принаймні 2 символи')
-    .required('Назва магазину обов’язкова'),
-  taxId: Yup.string()
-    .matches(/^\d{8,10}$/, 'Введіть коректний код ЄДРПОУ (8 цифр) або ІПН (10 цифр)')
-    .required('Код ЄДРПОУ / ІПН обов’язковий'),
-  fullName: Yup.string()
-    .min(3, 'Введіть повне ім’я контактної особи')
-    .required('ПІБ контактної особи обов’язкове'),
-  email: Yup.string().email('Некоректна електронна пошта').required('Електронна пошта обов’язкова'),
+    .required('Обов’язкове поле'),
+  email: Yup.string().email('Некоректний email').required('Обов’язкове поле'),
   number: Yup.string()
-    .matches(/^\+\d{9,15}$/, 'Введіть номер у міжнародному форматі (напр. +380991234567)')
-    .required('Номер телефону обов’язковий'),
+    .matches(/^\+\d{9,15}$/, 'Введіть номер у міжнародному форматі (напр. +380505222222)')
+    .required('Обов’язкове поле'),
   password: Yup.string()
     .min(6, 'Пароль має бути не менше 6 символів')
-    .required('Пароль обов’язковий'),
+    .required('Обов’язкове поле'),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref('password'), null], 'Паролі не збігаються')
-    .required('Підтвердіть пароль'),
+    .required('Обов’язкове поле'),
   agreement: Yup.boolean().oneOf([true], 'Потрібно прийняти Угоду користувача').required('Обов’язково'),
   privacy: Yup.boolean().oneOf([true], 'Потрібно прийняти Політику конфіденційності').required('Обов’язково'),
 });
@@ -46,8 +41,12 @@ export default function SellerSignUpForm() {
   const handleSubmit = async (values, actions) => {
     setIsLoading(true);
     try {
-      const { agreement, privacy, confirmPassword, ...registrationData } = values;
-      const result = await dispatch(register({ ...registrationData, role: 'SELLER' }));
+      const { agreement, privacy, confirmPassword, storeName, ...registrationData } = values;
+      const result = await dispatch(register({
+        ...registrationData,
+        role: 'SELLER',
+        storeName,
+      }));
 
       if (register.fulfilled.match(result)) {
         toast.success('Реєстрацію продавця успішно відправлено!');
@@ -68,16 +67,16 @@ export default function SellerSignUpForm() {
   };
 
   return (
-    <div className="w-full max-w-[440px] mx-auto p-1">
-      <h1 className="text-2xl md:text-3xl font-bold font-dm text-center text-[#104c9a] mb-5">
-        Реєстрація продавця
+    <div className="w-full max-w-[420px] mx-auto p-1">
+      {/* Title matching Figma frame 4125:33092 */}
+      <h1 className="text-2xl md:text-3xl font-bold font-dm text-center text-[#104c9a] mb-6">
+        Seller Registration
       </h1>
+
       <Formik
         validationSchema={sellerRegistrationSchema}
         initialValues={{
           storeName: '',
-          taxId: '',
-          fullName: '',
           email: '',
           number: '',
           password: '',
@@ -87,41 +86,43 @@ export default function SellerSignUpForm() {
         }}
         onSubmit={handleSubmit}
       >
-        <Form className="flex flex-col text-black gap-3">
-          <TextInput
-            name="storeName"
-            label="Назва магазину / компанії"
-            placeholder="ТОВ 'Мой Магазин' або ФОП..."
-          />
+        <Form className="flex flex-col text-black gap-4">
+          {/* Field 1: Store Name */}
+          <div className="flex flex-col gap-1">
+            <TextInput
+              name="storeName"
+              label="Store Name"
+              placeholder="Enter"
+            />
+            {/* Figma Help Guidelines Bullets */}
+            <ul className="text-[10px] text-gray-500 space-y-0.5 mt-1 list-disc list-inside leading-tight bg-gray-50 p-2.5 rounded-lg border border-gray-100">
+              <li>You can specify the legal name of the store. For example, "FOP Ivanov", "TOV Iceberg".</li>
+              <li>You cannot include links to third-party sites in the title.</li>
+              <li>You can't specify a nickname on Instagram.</li>
+              <li>You cannot specify a phone number.</li>
+              <li>You cannot indicate the name of a trademark if you do not own the rights to it.</li>
+            </ul>
+          </div>
 
-          <TextInput
-            name="taxId"
-            label="Код ЄДРПОУ / ІПН"
-            placeholder="12345678 або 1234567890"
-          />
-
-          <TextInput
-            name="fullName"
-            label="ПІБ контактної особи"
-            placeholder="Шевченко Тарас Григорович"
-          />
-
+          {/* Field 2: Email */}
           <TextInput
             name="email"
-            label="Електронна пошта"
-            placeholder="example@email.com"
+            label="Email"
+            placeholder="Enter Email"
           />
 
+          {/* Field 3: Phone Number */}
           <TextInput
             name="number"
-            label="Номер телефону"
-            placeholder="+380991234567"
+            label="Phone Number"
+            placeholder="+380 50 522 22 22"
           />
 
+          {/* Field 4: Password */}
           <TextInput
             name="password"
-            label="Пароль"
-            placeholder="••••••••"
+            label="Password"
+            placeholder="Enter Password"
             type="password"
             showPasswordToggle
             showPassword={showPassword}
@@ -129,10 +130,11 @@ export default function SellerSignUpForm() {
             icon={showPassword ? <HideIcon /> : <ShowIcon />}
           />
 
+          {/* Field 5: Repeat Password */}
           <TextInput
             name="confirmPassword"
-            label="Підтвердження паролю"
-            placeholder="••••••••"
+            label="Repeat Password"
+            placeholder="Repeat Password"
             type="password"
             showPasswordToggle
             showPassword={showConfirmPassword}
@@ -140,29 +142,39 @@ export default function SellerSignUpForm() {
             icon={showConfirmPassword ? <HideIcon /> : <ShowIcon />}
           />
 
-          <div className="flex flex-col gap-2 my-2 text-xs text-gray-700">
+          {/* Checkboxes matching Figma frame 4125:33092 */}
+          <div className="flex flex-col gap-2 my-1 text-xs text-gray-700">
             <label className="flex items-center gap-2 cursor-pointer">
               <Field type="checkbox" name="agreement" className="w-4 h-4 rounded border-gray-300 accent-[#104c9a]" />
-              <span>Я приймаю <a href="#" className="text-[#104c9a] font-semibold hover:underline">Угоду користувача</a></span>
+              <span>User Agreement</span>
             </label>
             <ErrorMessage name="agreement" component="span" className="text-red-500 text-[11px]" />
 
             <label className="flex items-center gap-2 cursor-pointer">
               <Field type="checkbox" name="privacy" className="w-4 h-4 rounded border-gray-300 accent-[#104c9a]" />
-              <span>Я погоджуюсь з <a href="#" className="text-[#104c9a] font-semibold hover:underline">Політикою конфіденційності</a></span>
+              <span>Privacy Policy</span>
             </label>
             <ErrorMessage name="privacy" component="span" className="text-red-500 text-[11px]" />
           </div>
 
+          {/* Action Button matching Figma [ Next ] */}
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-3 font-bold rounded-xl text-white transition-all duration-300 shadow-md ${
+            className={`w-full py-3 font-bold rounded-lg text-white transition-all duration-300 shadow-md ${
               errorState ? 'bg-red-600' : 'bg-[#104c9a] hover:bg-[#071739]'
             } ${isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
           >
-            {isLoading ? 'Завантаження...' : 'Зареєструвати магазин'}
+            {isLoading ? 'Loading...' : 'Next'}
           </button>
+
+          {/* Bottom Link matching Figma "Already have an account? Log in" */}
+          <div className="text-center text-xs text-gray-500 mt-2">
+            <span>Already have an account? </span>
+            <Link href="/login" className="text-[#104c9a] font-bold hover:underline">
+              Log in
+            </Link>
+          </div>
         </Form>
       </Formik>
     </div>
