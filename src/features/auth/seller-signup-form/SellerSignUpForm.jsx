@@ -70,7 +70,7 @@ export default function SellerSignUpForm() {
     <div className="w-full max-w-[420px] mx-auto p-1">
       {/* Title matching Figma frame 4125:33092 */}
       <h1 className="text-2xl md:text-3xl font-bold font-dm text-center text-[#104c9a] mb-6">
-        Seller Registration
+        Реєстрація продавця
       </h1>
 
       <Formik
@@ -91,38 +91,38 @@ export default function SellerSignUpForm() {
           <div className="flex flex-col gap-1">
             <TextInput
               name="storeName"
-              label="Store Name"
-              placeholder="Enter"
+              label="Назва магазину"
+              placeholder="Введіть назву"
             />
             {/* Figma Help Guidelines Bullets */}
             <ul className="text-[10px] text-gray-500 space-y-0.5 mt-1 list-disc list-inside leading-tight bg-gray-50 p-2.5 rounded-lg border border-gray-100">
-              <li>You can specify the legal name of the store. For example, "FOP Ivanov", "TOV Iceberg".</li>
-              <li>You cannot include links to third-party sites in the title.</li>
-              <li>You can't specify a nickname on Instagram.</li>
-              <li>You cannot specify a phone number.</li>
-              <li>You cannot indicate the name of a trademark if you do not own the rights to it.</li>
+              <li>Ви можете вказати юридичну назву магазину. Наприклад, "ФОП Іванов", "ТОВ Айсберг".</li>
+              <li>Ви не можете додавати посилання на сторонні сайти в назву.</li>
+              <li>Не можна вказувати нікнейм з Instagram.</li>
+              <li>Не можна вказувати номер телефону.</li>
+              <li>Не можна вказувати назву торгової марки, якщо ви не володієте правами на неї.</li>
             </ul>
           </div>
 
           {/* Field 2: Email */}
           <TextInput
             name="email"
-            label="Email"
-            placeholder="Enter Email"
+            label="Електронна пошта"
+            placeholder="Введіть email"
           />
 
           {/* Field 3: Phone Number */}
           <TextInput
             name="number"
-            label="Phone Number"
+            label="Номер телефону"
             placeholder="+380 50 522 22 22"
           />
 
           {/* Field 4: Password */}
           <TextInput
             name="password"
-            label="Password"
-            placeholder="Enter Password"
+            label="Пароль"
+            placeholder="Введіть пароль"
             type="password"
             showPasswordToggle
             showPassword={showPassword}
@@ -133,8 +133,8 @@ export default function SellerSignUpForm() {
           {/* Field 5: Repeat Password */}
           <TextInput
             name="confirmPassword"
-            label="Repeat Password"
-            placeholder="Repeat Password"
+            label="Повторіть пароль"
+            placeholder="Повторіть пароль"
             type="password"
             showPasswordToggle
             showPassword={showConfirmPassword}
@@ -146,13 +146,13 @@ export default function SellerSignUpForm() {
           <div className="flex flex-col gap-2 my-1 text-xs text-gray-700">
             <label className="flex items-center gap-2 cursor-pointer">
               <Field type="checkbox" name="agreement" className="w-4 h-4 rounded border-gray-300 accent-[#104c9a]" />
-              <span>User Agreement</span>
+              <span>Угода користувача</span>
             </label>
             <ErrorMessage name="agreement" component="span" className="text-red-500 text-[11px]" />
 
             <label className="flex items-center gap-2 cursor-pointer">
               <Field type="checkbox" name="privacy" className="w-4 h-4 rounded border-gray-300 accent-[#104c9a]" />
-              <span>Privacy Policy</span>
+              <span>Політика конфіденційності</span>
             </label>
             <ErrorMessage name="privacy" component="span" className="text-red-500 text-[11px]" />
           </div>
@@ -165,14 +165,14 @@ export default function SellerSignUpForm() {
               errorState ? 'bg-red-600' : 'bg-[#104c9a] hover:bg-[#071739]'
             } ${isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
           >
-            {isLoading ? 'Loading...' : 'Next'}
+            {isLoading ? 'Завантаження...' : 'Далі'}
           </button>
 
           {/* Bottom Link matching Figma "Already have an account? Log in" */}
           <div className="text-center text-xs text-gray-500 mt-2">
-            <span>Already have an account? </span>
+            <span>Вже є акаунт? </span>
             <Link href="/login" className="text-[#104c9a] font-bold hover:underline">
-              Log in
+              Увійти
             </Link>
           </div>
         </Form>
