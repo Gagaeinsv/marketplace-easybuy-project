@@ -59,6 +59,25 @@ const dictionary = {
     toFixDiscussion: 'Закріпити діалог',
     saveDiscussion: 'Зберегти діалог',
 
+    // Settings Page (Change Password & Notifications)
+    changePasswordTitle: 'Зміна паролю',
+    oldPasswordLabel: 'Старий пароль',
+    newPasswordLabel: 'Новий пароль',
+    confirmNewPasswordLabel: 'Підтвердіть новий пароль',
+    updatePasswordBtn: 'Оновити пароль',
+    notificationSettings: 'Налаштування сповіщень',
+    orderStatusNotifications: 'Статус замовлень',
+    orderStatusDesc: 'Отримувати сповіщення про зміну статусу вашого замовлення',
+    promoNotifications: 'Акції та пропозиції',
+    promoDesc: 'Сповіщення про знижки, розпродажі та персональні промокоди',
+    securityNotifications: 'Безпека акаунту',
+    securityDesc: 'Важливі повідомлення про вхід з нових пристроїв та зміну паролю',
+    fillAllFields: 'Будь ласка, заповніть усі поля для паролю.',
+    passwordsDoNotMatch: 'Паролі не збігаються.',
+    passwordChangedSuccess: 'Пароль успішно змінено!',
+    passwordChangeFailed: 'Не вдалося змінити пароль.',
+    saving: 'Збереження...',
+
     // FooterSeller
     startSelling: 'Почніть продавати вже сьогодні!',
     sellSubtitle: 'Приєднуйтесь до нашого маркетплейсу та відкривайте нові можливості для вашого бізнесу!',
@@ -180,6 +199,25 @@ const dictionary = {
     deleteDiscussion: 'Delete discussion',
     toFixDiscussion: 'Pin discussion',
     saveDiscussion: 'Save discussion',
+
+    // Settings Page (Change Password & Notifications)
+    changePasswordTitle: 'Change Password',
+    oldPasswordLabel: 'Current Password',
+    newPasswordLabel: 'New Password',
+    confirmNewPasswordLabel: 'Confirm New Password',
+    updatePasswordBtn: 'Update Password',
+    notificationSettings: 'Notification Preferences',
+    orderStatusNotifications: 'Order Status Updates',
+    orderStatusDesc: 'Receive email notifications when your order status changes',
+    promoNotifications: 'Promotions & Discounts',
+    promoDesc: 'Get special offers and discount codes',
+    securityNotifications: 'Security Alerts',
+    securityDesc: 'Important security notifications regarding your account',
+    fillAllFields: 'Please fill in all password fields.',
+    passwordsDoNotMatch: 'Passwords do not match.',
+    passwordChangedSuccess: 'Password changed successfully!',
+    passwordChangeFailed: 'Failed to change password.',
+    saving: 'Saving...',
     
     // FooterSeller
     startSelling: 'Start selling today!',
