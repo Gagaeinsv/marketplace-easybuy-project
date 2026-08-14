@@ -11,25 +11,22 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import TextInput from '@/components/input/TextInput';
 import { useLanguage } from '@/context/LanguageContext';
+import Link from 'next/link';
 
 const registrationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email').required('Required'),
+  email: Yup.string().email('Некоректна електронна пошта').required('Обов’язкове поле'),
   number: Yup.string()
-    .matches(/^\+\d{9,15}$/, 'Enter a valid international phone number (e.g. +380991234567)')
-    .required('Phone number is required'),
+    .matches(/^\+\d{9,15}$/, 'Введіть номер у міжнародному форматі (напр. +380991234567)')
+    .required('Обов’язкове поле'),
   password: Yup.string()
-    .min(6, 'Password must be at least 6 characters long')
-    .max(50, 'Password cannot exceed 50 characters')
-    .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .matches(/[0-9]/, 'Password must contain at least one number')
-    .matches(/[^a-zA-Z0-9]/, 'Password must contain at least one special character')
-    .required('Password is required'),
+    .min(6, 'Пароль має бути не менше 6 символів')
+    .max(50, 'Пароль не може перевищувати 50 символів')
+    .required('Обов’язкове поле'),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    .required('Please confirm your password'),
-  agreement: Yup.boolean().oneOf([true], 'You must accept the User Agreement').required('Required'),
-  privacy: Yup.boolean().oneOf([true], 'You must accept the Privacy Policy').required('Required'),
+    .oneOf([Yup.ref('password'), null], 'Паролі не збігаються')
+    .required('Підтвердіть пароль'),
+  agreement: Yup.boolean().oneOf([true], 'Потрібно прийняти Угоду користувача').required('Обов’язково'),
+  privacy: Yup.boolean().oneOf([true], 'Потрібно прийняти Політику конфіденційності').required('Обов’язково'),
 });
 
 const SignUpForm = ({ role = 'CUSTOMER' }) => {
@@ -50,7 +47,7 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
       if (register.fulfilled.match(result)) {
         router.push('/check-email');
       } else {
-        toast.error(t('registrationFailed') || 'Registration failed.');
+        toast.error(t('registrationFailed') || 'Помилка реєстрації.');
         setErrorState(true);
 
         setTimeout(() => {
@@ -58,7 +55,7 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
         }, 3000);
       }
     } catch (error) {
-      toast.error(t('registrationError') || 'An unknown error occurred during register');
+      toast.error(t('registrationError') || 'Сталася помилка під час реєстрації');
       setErrorState(true);
 
       setTimeout(() => {
@@ -71,14 +68,15 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
   };
 
   return (
-    <div>
-      <h1 className="flex justify-center font-dm font-medium text-[40px] lg:text-[48px] mb-2">
-        {t('signUpTitle')}
+    <div className="w-full max-w-[420px] mx-auto p-1">
+      <h1 className="flex justify-center font-dm font-bold text-2xl lg:text-3xl text-[#104c9a] mb-6">
+        {t('signUpTitle') || 'Реєстрація'}
       </h1>
       <Formik
         validationSchema={registrationSchema}
         initialValues={{
           email: '',
+          number: '',
           password: '',
           confirmPassword: '',
           agreement: false,
@@ -87,15 +85,23 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
         }}
         onSubmit={handleSubmit}
       >
-        <Form className="flex flex-col text-black ">
-          <TextInput name="email" label={t('emailLabel')} placeholder={t('emailPlaceholder')} />
+        <Form className="flex flex-col text-black gap-3">
+          <TextInput
+            name="email"
+            label={t('emailLabel') || 'Електронна пошта'}
+            placeholder={t('emailPlaceholder') || 'example@email.com'}
+          />
 
-          <TextInput name="number" label={t('phoneNumberLabel')} placeholder={t('phoneNumberPlaceholder')} />
+          <TextInput
+            name="number"
+            label={t('phoneNumberLabel') || 'Номер телефону'}
+            placeholder={t('phoneNumberPlaceholder') || '+380991234567'}
+          />
 
           <TextInput
             name="password"
-            label={t('passwordLabel')}
-            placeholder={t('passwordPlaceholder')}
+            label={t('passwordLabel') || 'Пароль'}
+            placeholder={t('passwordPlaceholder') || '••••••••'}
             type="password"
             showPasswordToggle
             showPassword={showPassword}
@@ -105,8 +111,8 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
 
           <TextInput
             name="confirmPassword"
-            label={t('confirmPasswordLabel')}
-            placeholder={t('confirmPasswordPlaceholder')}
+            label={t('confirmPasswordLabel') || 'Підтвердження паролю'}
+            placeholder={t('confirmPasswordPlaceholder') || '••••••••'}
             type="password"
             showPasswordToggle
             showPassword={showConfirmPassword}
@@ -114,40 +120,36 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
             icon={showConfirmPassword ? <HideIcon /> : <ShowIcon />}
           />
 
-          <div className="h-[45px]">
-            <label className="flex gap-2 ">
-              <Field type="checkbox" name="agreement" id="agreement" />
-              <p className="text-[14px] text-blue-500">{t('userAgreementLink')}</p>
+          <div className="flex flex-col gap-2 my-2 text-xs text-gray-700">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <Field type="checkbox" name="agreement" className="w-4 h-4 rounded border-gray-300 accent-[#104c9a]" />
+              <span className="text-gray-700">{t('userAgreementLink') || 'Я приймаю Угоду користувача'}</span>
             </label>
-            <ErrorMessage
-              className="min-h-5 text-[12px] text-red-500 pt-2"
-              name="agreement"
-              component="span"
-            />
-          </div>
-          <div className="mb-2 h-[45px]">
-            <label className="flex gap-2 ">
-              <Field type="checkbox" name="privacy" id="privacy" />
-              <p className="text-[14px] text-blue-500">{t('privacyPolicyLink')}</p>
+            <ErrorMessage name="agreement" component="span" className="text-red-500 text-[11px]" />
+
+            <label className="flex items-center gap-2 cursor-pointer">
+              <Field type="checkbox" name="privacy" className="w-4 h-4 rounded border-gray-300 accent-[#104c9a]" />
+              <span className="text-gray-700">{t('privacyPolicyLink') || 'Я погоджуюсь з Політикою конфіденційності'}</span>
             </label>
-            <ErrorMessage
-              className="min-h-5 text-[12px] text-red-500 pt-2"
-              name="privacy"
-              component="span"
-            />
+            <ErrorMessage name="privacy" component="span" className="text-red-500 text-[11px]" />
           </div>
+
           <button
             type="submit"
             disabled={isLoading}
-            className={`
-    font-bold rounded-lg px-4 py-3 text-white transition-colors duration-300
-    ${errorState ? 'bg-red-600' : 'bg-blue-900 hover:bg-blue-800'}
-    ${isLoading ? 'opacity-70 cursor-not-allowed' : 'lg:cursor-pointer'}
-    border-none mb-3
-  `}
+            className={`w-full py-3 font-bold rounded-xl text-white transition-all duration-300 shadow-md ${
+              errorState ? 'bg-red-600' : 'bg-[#104c9a] hover:bg-[#071739]'
+            } ${isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
           >
-            {isLoading ? t('loadingText') : t('confirmBtn')}
+            {isLoading ? (t('loadingText') || 'Завантаження...') : (t('confirmBtn') || 'Зареєструватися')}
           </button>
+
+          <div className="text-center text-xs text-gray-500 mt-2">
+            <span>{t('alreadyHaveAccount') || 'Вже є акаунт?'} </span>
+            <Link href="/login" className="text-[#104c9a] font-bold hover:underline">
+              {t('logInAction') || 'Увійти'}
+            </Link>
+          </div>
         </Form>
       </Formik>
     </div>

@@ -17,6 +17,25 @@ const dictionary = {
     logOut: 'Вийти',
     logIn: 'Увійти',
     
+    // Auth & Sign Up Form Keys
+    signUpTitle: 'Реєстрація',
+    emailLabel: 'Електронна пошта',
+    emailPlaceholder: 'example@email.com',
+    phoneNumberLabel: 'Номер телефону',
+    phoneNumberPlaceholder: '+380991234567',
+    passwordLabel: 'Пароль',
+    passwordPlaceholder: '••••••••',
+    confirmPasswordLabel: 'Підтвердження паролю',
+    confirmPasswordPlaceholder: '••••••••',
+    userAgreementLink: 'Я приймаю Угоду користувача',
+    privacyPolicyLink: 'Я погоджуюсь з Політикою конфіденційності',
+    confirmBtn: 'Зареєструватися',
+    alreadyHaveAccount: 'Вже є акаунт?',
+    logInAction: 'Увійти',
+    registrationFailed: 'Помилка реєстрації.',
+    registrationError: 'Сталася помилка під час реєстрації',
+    loadingText: 'Завантаження...',
+
     // FooterSeller
     startSelling: 'Почніть продавати вже сьогодні!',
     sellSubtitle: 'Приєднуйтесь до нашого маркетплейсу та відкривайте нові можливості для вашого бізнесу!',
@@ -81,7 +100,7 @@ const dictionary = {
     
     // Sort Options
     fromCheapToExpensive: 'Від дешевих до дорогих',
-    fromExpensiveToCheap: 'Від дорогих до дешевих',
+    fromExpensiveToCheap: 'Від дорогих до дорогих',
     byPopularity: 'За популярністю',
     byNovelty: 'За новинками',
   },
@@ -96,6 +115,25 @@ const dictionary = {
     myProfile: 'My Profile',
     logOut: 'Log Out',
     logIn: 'Log In',
+
+    // Auth & Sign Up Form Keys
+    signUpTitle: 'Sign Up',
+    emailLabel: 'Email',
+    emailPlaceholder: 'example@email.com',
+    phoneNumberLabel: 'Phone Number',
+    phoneNumberPlaceholder: '+380991234567',
+    passwordLabel: 'Password',
+    passwordPlaceholder: '••••••••',
+    confirmPasswordLabel: 'Confirm Password',
+    confirmPasswordPlaceholder: '••••••••',
+    userAgreementLink: 'I accept User Agreement',
+    privacyPolicyLink: 'I accept Privacy Policy',
+    confirmBtn: 'Sign Up',
+    alreadyHaveAccount: 'Already have an account?',
+    logInAction: 'Log In',
+    registrationFailed: 'Registration failed.',
+    registrationError: 'An unknown error occurred during registration',
+    loadingText: 'Loading...',
     
     // FooterSeller
     startSelling: 'Start selling today!',
