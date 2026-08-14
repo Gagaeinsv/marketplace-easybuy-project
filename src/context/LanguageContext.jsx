@@ -46,6 +46,20 @@ const dictionary = {
     payment: 'Оплата',
     settings: 'Налаштування',
 
+    // Personal Data Page & Form Editing
+    userData: 'Персональні дані',
+    addressData: 'Адреса доставки',
+    dateOfBirth: 'Дата народження',
+    profilePhone: 'Телефон',
+    profileName: 'Ім\'я',
+    profileEmail: 'Електронна пошта',
+    country: 'Країна',
+    city: 'Місто',
+    address: 'Вулиця та будинок',
+    cancelBtn: 'Скасувати',
+    saveBtn: 'Зберегти',
+    loadingProfile: 'Завантаження профілю...',
+
     // Message Page Tabs & Content
     messagesAll: 'Всі повідомлення',
     messagesUnread: 'Непрочитані',
@@ -77,6 +91,26 @@ const dictionary = {
     passwordChangedSuccess: 'Пароль успішно змінено!',
     passwordChangeFailed: 'Не вдалося змінити пароль.',
     saving: 'Збереження...',
+
+    // Help & FAQ Section
+    faqTitle: 'Часті запитання (FAQ)',
+    faq1Q: 'Як я можу відстежити своє замовлення?',
+    faq1A: 'Ви можете відстежувати статус замовлення безпосередньо у своєму кабінеті в розділі "Мої замовлення" або за посиланням для відстеження, надісланим на вашу пошту.',
+    faq2Q: 'Які способи оплати підтримуються?',
+    faq2A: 'Ми приймаємо картки Visa, Mastercard, Apple Pay, Google Pay та оплату при отриманні (післяплата).',
+    faq3Q: 'Як мені повернути товар?',
+    faq3A: 'Ви можете оформити запит на повернення протягом 14 днів з моменту отримання товару через розділ підтримки або звернувшись до продавця.',
+    faq4Q: 'Як зв\'язатися з продавцем напряму?',
+    faq4A: 'Перейдіть на сторінку товару або в деталі вашого замовлення та натисніть "Повідомлення продавцю", щоб відкрити прямий чат.',
+    contactSupportTitle: 'Потрібна додаткова допомога?',
+    contactSupportDesc: 'Надішліть нам повідомлення, і наша служба підтримки відповість протягом 24 годин.',
+    subjectLabel: 'Тема',
+    subjectPlaceholder: 'напр., Питання щодо замовлення #1234',
+    messageLabel: 'Повідомлення',
+    messagePlaceholder: 'Детально опишіть ваше питання або проблему...',
+    sending: 'Надсилання...',
+    sendSupportRequestBtn: 'Надіслати повідомлення',
+    supportTicketCreated: 'Запит до служби підтримки надіслано! Наша команда зв\'яжеться з вами найближчим часом.',
 
     // FooterSeller
     startSelling: 'Почніть продавати вже сьогодні!',
@@ -187,6 +221,20 @@ const dictionary = {
     payment: 'Payment',
     settings: 'Settings',
 
+    // Personal Data Page & Form Editing
+    userData: 'Personal Data',
+    addressData: 'Shipping Address',
+    dateOfBirth: 'Date of Birth',
+    profilePhone: 'Phone',
+    profileName: 'Name',
+    profileEmail: 'Email',
+    country: 'Country',
+    city: 'City',
+    address: 'Street and House',
+    cancelBtn: 'Cancel',
+    saveBtn: 'Save',
+    loadingProfile: 'Loading profile...',
+
     // Message Page Tabs & Content
     messagesAll: 'All',
     messagesUnread: 'Unread',
@@ -218,6 +266,26 @@ const dictionary = {
     passwordChangedSuccess: 'Password changed successfully!',
     passwordChangeFailed: 'Failed to change password.',
     saving: 'Saving...',
+
+    // Help & FAQ Section
+    faqTitle: 'Frequently Asked Questions',
+    faq1Q: 'How can I track my order?',
+    faq1A: 'You can track your order status directly in your account under the "My Orders" section or via the tracking link sent to your email.',
+    faq2Q: 'What payment methods are supported?',
+    faq2A: 'We accept Visa, Mastercard, Apple Pay, Google Pay, and Cash on Delivery (COD).',
+    faq3Q: 'How do I return a product?',
+    faq3A: 'You can initiate a return request within 14 days of receiving your item via the "Refunds" section in your buyer cabinet.',
+    faq4Q: 'How do I contact a seller directly?',
+    faq4A: 'Go to the product page or your order details and click "Message Seller" to open a direct chat thread.',
+    contactSupportTitle: 'Need Further Help?',
+    contactSupportDesc: 'Send us a message and our support team will respond within 24 hours.',
+    subjectLabel: 'Subject',
+    subjectPlaceholder: 'e.g., Question about my order #1234',
+    messageLabel: 'Message',
+    messagePlaceholder: 'Describe your issue or question in detail...',
+    sending: 'Sending...',
+    sendSupportRequestBtn: 'Send Message',
+    supportTicketCreated: 'Support request sent! Our team will get back to you shortly.',
     
     // FooterSeller
     startSelling: 'Start selling today!',
