@@ -45,6 +45,7 @@ const dictionary = {
     productsToCompare: 'Порівняння товарів',
     payment: 'Оплата',
     settings: 'Налаштування',
+    helpCenter: 'Підтримка та FAQ',
 
     // Personal Data Page & Form Editing
     userData: 'Персональні дані',
@@ -276,6 +277,7 @@ const dictionary = {
     productsToCompare: 'Compare',
     payment: 'Payment',
     settings: 'Settings',
+    helpCenter: 'Support & FAQ',
 
     // Personal Data Page & Form Editing
     userData: 'Personal Data',

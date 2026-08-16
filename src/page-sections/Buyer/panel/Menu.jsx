@@ -17,6 +17,8 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { selectUserProfile } from '@/store/user/selectors';
 import { useLanguage } from '@/context/LanguageContext';
 
+import { SupportIcon } from '@/components/icons/mobile/MenuIcons.jsx';
+
 const Menu = ({ setActiveSection, activeSection }) => {
   const { t } = useLanguage();
   const dispatch = useAppDispatch();
@@ -33,6 +35,7 @@ const Menu = ({ setActiveSection, activeSection }) => {
     product: { label: t('productsToCompare') || 'Compare', icon: <CompareIcon /> },
     payment: { label: t('payment') || 'Payment', icon: <PaymentIcon /> },
     setting: { label: t('settings') || 'Settings', icon: <EditIcon /> },
+    help: { label: t('helpCenter') || 'Support & FAQ', icon: <SupportIcon /> },
   };
 
   const handleLogout = () => {
