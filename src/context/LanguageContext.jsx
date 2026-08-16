@@ -86,6 +86,10 @@ const dictionary = {
     noPaymentMethodsDesc: 'Ви ще не зберегли жодного платіжного методу. Додайте кредитну або дебетову картку для швидшого оформлення замовлень у майбутньому.',
     addPaymentMethodBtn: 'Додати платіжний метод',
 
+    // Compare Products Page
+    nothingToCompare: 'Нічого порівнювати',
+    nothingToCompareDesc: 'Ви ще не додали жодного товару для порівняння. Перегляньте наш каталог, щоб знайти товари для порівняння.',
+
     // Orders Page
     allOrdersFilter: 'Всі замовлення',
     statusCompleted: 'Виконано',
@@ -312,6 +316,10 @@ const dictionary = {
     noPaymentMethods: 'No payment methods',
     noPaymentMethodsDesc: 'You don\'t have any saved payment methods yet. Add a credit or debit card for faster checkout in the future.',
     addPaymentMethodBtn: 'Add Payment Method',
+
+    // Compare Products Page
+    nothingToCompare: 'Nothing to compare',
+    nothingToCompareDesc: 'You haven\'t added any products to compare yet. Browse our catalogue to find items you\'d like to compare side-by-side.',
 
     // Orders Page
     allOrdersFilter: 'All orders',

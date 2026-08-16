@@ -18,7 +18,7 @@ const EmptyWishlistIllustration = () => {
       </div>
       <h3 className="text-xl font-bold text-[#104c9a] mb-2">{t('wishlistEmptyTitle')}</h3>
       <p className="text-sm text-[#104c9a] opacity-70 mb-6 text-center max-w-sm">{t('wishlistEmptyDesc')}</p>
-      <Link href="/">
+      <Link href="/catalogue">
         <button className="bg-gradient-to-b from-[#4b99ff] to-[#071739] text-white font-bold py-3 px-8 rounded-xl hover:brightness-110 shadow-md transition-all">
           {t('catalogueBtn')}
         </button>
