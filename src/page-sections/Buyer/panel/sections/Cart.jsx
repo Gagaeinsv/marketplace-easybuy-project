@@ -132,9 +132,9 @@ const Cart = () => {
         <p className="text-gray-500 mb-8">{t('emptyCartDesc')}</p>
         <Link 
           href="/catalogue"
-          className="w-full max-w-[320px] bg-gradient-to-b from-[#4b99ff] to-[#071739] text-white font-bold py-4 rounded-xl shadow-lg hover:brightness-110 transition"
+          className="w-full max-w-[320px] bg-gradient-to-b from-[#4b99ff] to-[#071739] text-white font-bold py-4 rounded-xl shadow-lg hover:brightness-110 transition text-center"
         >
-          GO TO SHOPPING
+          {t('goToShopping') || 'GO TO SHOPPING'}
         </Link>
       </div>
     );

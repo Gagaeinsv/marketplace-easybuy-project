@@ -153,7 +153,7 @@ const Message = () => {
       {/* Chat Items */}
       <div className="flex flex-col gap-2">
         {filteredMessages.length === 0 && (
-          <div className="text-center text-gray-400 mt-10">No messages here</div>
+          <div className="text-center text-gray-400 mt-10">{t('noMessages') || 'No messages here'}</div>
         )}
         {filteredMessages.map((chat) => (
           <div 
@@ -228,7 +228,7 @@ const Message = () => {
       {!activeChatId ? (
         <div className="hidden lg:flex flex-col items-center text-gray-400">
           <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="mb-4 opacity-50"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-          <p>Select a chat to start messaging</p>
+          <p>{t('selectChatToStart') || 'Select a chat to start messaging'}</p>
         </div>
       ) : (
         <div className="flex flex-col h-full h-[600px] lg:h-[700px]">

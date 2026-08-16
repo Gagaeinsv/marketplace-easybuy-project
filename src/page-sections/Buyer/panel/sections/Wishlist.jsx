@@ -36,7 +36,7 @@ const Wishlist = () => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-[#104c9a]">Wishlist</h2>
+        <h2 className="text-2xl font-bold text-[#104c9a]">{t('wishlist') || 'Wishlist'}</h2>
         {favoriteProducts.length > 0 && (
           <button className="flex items-center gap-2 text-[#104c9a] font-bold hover:text-blue-700 transition-colors text-sm">
             <ShareIcon className="w-4 h-4" />

@@ -24,7 +24,7 @@ const SearchIcon = ({ className }) => (
 );
 
 const Orders = () => {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const dispatch = useAppDispatch();
   
   const [filter, setFilter] = useState('All orders');
@@ -47,9 +47,7 @@ const Orders = () => {
   }, [toastMessage]);
 
   const handleReorder = (order) => {
-    // Add all items from this order into the cart
     order.items.forEach((item, index) => {
-      // 1) Push to mockCart for the Cart page
       mockCart.push({
         id: `reorder-${order.id}-${index}-${Date.now()}`,
         name: item.name,
@@ -58,7 +56,6 @@ const Orders = () => {
         qty: item.qty
       });
 
-      // 2) Dispatch to Redux so the Header icon badge updates
       dispatch(addToCart({
         id: `reorder-${order.id}-${index}-${Date.now()}`,
         art: `reorder-${order.id}-${index}`,
@@ -100,6 +97,56 @@ const Orders = () => {
     }
   };
 
+  const getFilterLabel = (option) => {
+    switch (option) {
+      case 'All orders': return t('allOrdersFilter') || 'All orders';
+      case 'Completed': return t('statusCompleted') || 'Completed';
+      case 'In processing': return t('statusInProcessing') || 'In processing';
+      case 'Cancelled': return t('statusCancelled') || 'Cancelled';
+      case 'Awaiting shipment': return t('statusAwaitingShipment') || 'Awaiting shipment';
+      default: return option;
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'Completed': return t('statusCompleted') || 'Completed';
+      case 'In processing': return t('statusInProcessing') || 'In processing';
+      case 'Cancelled': return t('statusCancelled') || 'Cancelled';
+      case 'Awaiting shipment': return t('statusAwaitingShipment') || 'Awaiting shipment';
+      default: return status;
+    }
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const months = {
+      'January': 'січня',
+      'February': 'лютого',
+      'March': 'березня',
+      'April': 'квітня',
+      'May': 'травня',
+      'June': 'червня',
+      'July': 'липня',
+      'August': 'серпня',
+      'September': 'вересня',
+      'October': 'жовтня',
+      'November': 'листопада',
+      'December': 'грудня'
+    };
+    
+    if (locale === 'ua') {
+      let formatted = dateStr;
+      Object.keys(months).forEach(monthEng => {
+        if (formatted.includes(monthEng)) {
+          formatted = formatted.replace(monthEng, months[monthEng]);
+        }
+      });
+      return formatted;
+    }
+    return dateStr;
+  };
+
   // --- MOBILE DETAILED VIEW ---
   if (mobileActiveOrder) {
     const order = mobileActiveOrder;
@@ -109,7 +156,7 @@ const Orders = () => {
           <button onClick={() => setMobileActiveOrder(null)} className="absolute left-0 p-2 -ml-2 text-blue-900">
             <LeftArrIcon />
           </button>
-          <h2 className="text-xl font-bold text-blue-900 w-full text-center">Order ID: {order.id}</h2>
+          <h2 className="text-xl font-bold text-blue-900 w-full text-center">{t('orderId') || 'Order ID'}: {order.id}</h2>
         </div>
 
         <div className="flex flex-col gap-6">
@@ -119,52 +166,52 @@ const Orders = () => {
                 <div className="w-20 h-20 bg-gray-50 rounded-lg overflow-hidden flex-shrink-0 relative">
                   <Image src={item.image} alt={item.name} fill sizes="80px" className="object-cover" />
                 </div>
-                <span className={`text-sm font-semibold ${getStatusColor(order.status)}`}>{order.status}</span>
+                <span className={`text-sm font-semibold ${getStatusColor(order.status)}`}>{getStatusLabel(order.status)}</span>
               </div>
               <div className="flex justify-between items-center mb-2">
                 <span className="font-semibold text-blue-900 line-clamp-3 leading-tight">{item.name}</span>
                 <span className="text-gray-400 text-sm flex-shrink-0 ml-2">x{item.qty}</span>
               </div>
               <div className="flex gap-2 items-center">
-                <span className="text-gray-500 font-medium">Total:</span>
+                <span className="text-gray-500 font-medium">{t('totalLabel') || 'Total'}:</span>
                 <span className="font-bold text-blue-900">US ${(item.price * item.qty).toFixed(2)}</span>
               </div>
             </div>
           ))}
 
           <div className="flex justify-between items-center py-4 border-b border-gray-100">
-            <span className="text-gray-600 font-bold">Order Total:</span>
+            <span className="text-gray-600 font-bold">{t('orderTotal') || 'Order Total'}:</span>
             <span className="font-bold text-blue-900 text-lg">US ${order.items.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</span>
           </div>
 
           <div className="flex flex-col gap-3 py-2 text-sm">
             <div className="flex gap-2">
-              <span className="text-blue-900 font-bold">Order Date:</span>
-              <span className="text-gray-500">{order.date}</span>
+              <span className="text-blue-900 font-bold">{t('orderDate') || 'Order Date'}:</span>
+              <span className="text-gray-500">{formatDate(order.date)}</span>
             </div>
             <div className="flex gap-2">
-              <span className="text-blue-900 font-bold">Order ID:</span>
+              <span className="text-blue-900 font-bold">{t('orderId') || 'Order ID'}:</span>
               <span className="text-gray-500">{order.id}</span>
             </div>
             <div className="flex gap-2">
-              <span className="text-blue-900 font-bold">Delivery date:</span>
-              <span className="text-gray-500">{order.deliveryDate}</span>
+              <span className="text-blue-900 font-bold">{t('deliveryDateLabel') || 'Delivery date'}:</span>
+              <span className="text-gray-500">{formatDate(order.deliveryDate)}</span>
             </div>
             <div className="flex gap-2">
-              <span className="text-blue-900 font-bold">Seller:</span>
+              <span className="text-blue-900 font-bold">{t('sellerLabel') || 'Seller'}:</span>
               <span className="text-blue-500 underline">{order.seller}</span>
             </div>
           </div>
 
           <div className="flex flex-col gap-3 mt-4">
             <button onClick={() => { setReviewOrder(order); setRating(5); setReviewSuccess(false); }} className="w-full bg-gradient-to-b from-[#4b99ff] to-[#071739] text-white font-semibold py-3 rounded-lg shadow hover:brightness-110 transition">
-              Leave a review
+              {t('leaveReviewBtn') || 'Leave a review'}
             </button>
             <button onClick={() => handleReorder(order)} className="w-full border border-blue-900 text-blue-900 font-semibold py-3 rounded-lg hover:bg-blue-50 transition">
-              Reorder
+              {t('reorderBtn') || 'Reorder'}
             </button>
             <button onClick={() => setRefundOrder(order)} className="w-full border border-blue-900 text-blue-900 font-semibold py-3 rounded-lg hover:bg-blue-50 transition">
-              Refunds
+              {t('refundsBtn') || 'Refunds'}
             </button>
           </div>
         </div>
@@ -174,7 +221,7 @@ const Orders = () => {
 
   // --- LIST VIEW (DESKTOP & MOBILE) ---
   return (
-    <div className="w-full flex flex-col">
+    <div className="w-full flex flex-col animate-fadeIn">
       
       {/* Top Controls: Mobile Search */}
       <div className="md:hidden w-full mb-4">
@@ -182,7 +229,7 @@ const Orders = () => {
           <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input 
             type="text" 
-            placeholder="Order search" 
+            placeholder={t('orderSearchPlaceholder') || 'Order search'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
@@ -198,7 +245,7 @@ const Orders = () => {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="w-full flex items-center justify-between border border-gray-200 rounded-lg px-4 py-2 bg-white text-sm text-gray-600 hover:border-blue-400 transition"
             >
-              <span>{filter}</span>
+              <span>{getFilterLabel(filter)}</span>
               <ChevronDownIcon className={`text-gray-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
             
@@ -210,7 +257,7 @@ const Orders = () => {
                     onClick={() => { setFilter(opt); setIsDropdownOpen(false); }}
                     className={`w-full text-left px-4 py-2 text-sm hover:bg-blue-50 transition ${filter === opt ? 'text-blue-900 font-semibold' : 'text-gray-600'}`}
                   >
-                    {opt}
+                    {getFilterLabel(opt)}
                   </button>
                 ))}
               </div>
@@ -222,7 +269,7 @@ const Orders = () => {
             <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Order search" 
+              placeholder={t('orderSearchPlaceholder') || 'Order search'} 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-8 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
@@ -232,7 +279,7 @@ const Orders = () => {
                 onClick={() => setSearchQuery('')} 
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold hover:text-gray-600"
               >
-                Clear
+                {t('clear') || 'Clear'}
               </button>
             )}
           </div>
@@ -240,7 +287,7 @@ const Orders = () => {
 
       {/* MOBILE LIST VIEW */}
       <div className="md:hidden flex flex-col gap-4">
-        {filteredOrders.length === 0 && <p className="text-gray-500 text-center py-8">No orders found.</p>}
+        {filteredOrders.length === 0 && <p className="text-gray-500 text-center py-8">{t('noOrdersFound') || 'No orders found.'}</p>}
         {filteredOrders.map(order => {
           const firstItem = order.items[0];
           return (
@@ -254,14 +301,14 @@ const Orders = () => {
               </div>
               <div className="flex flex-col flex-grow justify-between py-1">
                 <div className="flex justify-between items-start">
-                  <span className="text-blue-900 font-bold text-sm">Order ID: {order.id}</span>
+                  <span className="text-blue-900 font-bold text-sm">{t('orderId') || 'Order ID'}: {order.id}</span>
                 </div>
                 <div className="flex flex-col gap-1">
                   <span className="text-blue-500 text-sm font-medium line-clamp-3 leading-tight">{firstItem.name}</span>
-                  <span className="text-gray-400 text-[12px]">{order.date}</span>
+                  <span className="text-gray-400 text-[12px]">{formatDate(order.date)}</span>
                 </div>
                 <div className="flex justify-between items-center mt-1">
-                  <span className="text-gray-600 text-xs font-medium">Total: <span className="font-bold text-blue-900">US ${order.items.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</span></span>
+                  <span className="text-gray-600 text-xs font-medium">{t('totalLabel') || 'Total'}: <span className="font-bold text-blue-900">US ${order.items.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</span></span>
                 </div>
               </div>
             </div>
@@ -272,7 +319,7 @@ const Orders = () => {
       {/* DESKTOP TABLE VIEW */}
       <div className="hidden md:block w-full">
         {filteredOrders.length === 0 ? (
-          <p className="text-gray-500 text-center py-10 text-lg">No orders found.</p>
+          <p className="text-gray-500 text-center py-10 text-lg">{t('noOrdersFound') || 'No orders found.'}</p>
         ) : (
           <div className="w-full flex flex-col">
             {filteredOrders.map((order, index) => {
@@ -291,15 +338,15 @@ const Orders = () => {
                         <Image src={firstItem.image} alt={firstItem.name} fill sizes="80px" className="object-cover" />
                       </div>
                       {extraItemsCount > 0 && (
-                        <span className="text-sm text-gray-500">+ {extraItemsCount} more items...</span>
+                        <span className="text-sm text-gray-500">+ {extraItemsCount} {t('moreItems') || 'more items...'}</span>
                       )}
                     </div>
 
-                    <div className={`w-[140px] text-sm ${getStatusColor(order.status)}`}>{order.status}</div>
-                    <div className="w-[140px] text-sm text-gray-500">Order ID: {order.id}</div>
-                    <div className="w-[160px] text-sm text-gray-500">{order.date}</div>
+                    <div className={`w-[140px] text-sm ${getStatusColor(order.status)}`}>{getStatusLabel(order.status)}</div>
+                    <div className="w-[140px] text-sm text-gray-500">{t('orderId') || 'Order ID'}: {order.id}</div>
+                    <div className="w-[160px] text-sm text-gray-500">{formatDate(order.date)}</div>
                     <div className="w-[140px] text-sm text-gray-500 flex items-center justify-between">
-                      <span>Total: <span className="text-gray-800 font-semibold">US ${order.items.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</span></span>
+                      <span>{t('totalLabel') || 'Total'}: <span className="text-gray-800 font-semibold">US ${order.items.reduce((sum, item) => sum + item.price * item.qty, 0).toFixed(2)}</span></span>
                     </div>
                     
                     <button 
@@ -331,22 +378,22 @@ const Orders = () => {
                       {/* Middle: Order details */}
                       <div className="flex flex-col gap-3 flex-grow text-sm min-w-[200px]">
                         <div className="flex flex-col gap-1">
-                          <span className="font-bold text-gray-700">Status: {order.status}</span>
+                          <span className="font-bold text-gray-700">{t('statusLabel') || 'Status'}: {getStatusLabel(order.status)}</span>
                         </div>
                         <div className="flex gap-2">
-                          <span className="font-bold text-gray-700">Order Date:</span>
-                          <span className="text-gray-500">{order.date}</span>
+                          <span className="font-bold text-gray-700">{t('orderDate') || 'Order Date'}:</span>
+                          <span className="text-gray-500">{formatDate(order.date)}</span>
                         </div>
                         <div className="flex gap-2">
-                          <span className="font-bold text-gray-700">Order ID:</span>
+                          <span className="font-bold text-gray-700">{t('orderId') || 'Order ID'}:</span>
                           <span className="text-gray-500">{order.id}</span>
                         </div>
                         <div className="flex gap-2">
-                          <span className="font-bold text-gray-700">Delivery date:</span>
-                          <span className="text-gray-500">{order.deliveryDate}</span>
+                          <span className="font-bold text-gray-700">{t('deliveryDateLabel') || 'Delivery date'}:</span>
+                          <span className="text-gray-500">{formatDate(order.deliveryDate)}</span>
                         </div>
                         <div className="flex gap-2">
-                          <span className="font-bold text-gray-700">Seller:</span>
+                          <span className="font-bold text-gray-700">{t('sellerLabel') || 'Seller'}:</span>
                           <span className="text-blue-500 underline cursor-pointer hover:text-blue-700 transition">{order.seller}</span>
                         </div>
                       </div>
@@ -354,13 +401,13 @@ const Orders = () => {
                       {/* Right: Actions */}
                       <div className="flex flex-col gap-2 mt-4 w-full">
                         <button onClick={() => { setReviewOrder(order); setRating(5); setReviewSuccess(false); }} className="w-full bg-gradient-to-b from-[#4b99ff] to-[#071739] text-white font-semibold py-2.5 rounded-lg shadow hover:brightness-110 transition text-sm">
-                          Leave a review
+                          {t('leaveReviewBtn') || 'Leave a review'}
                         </button>
                         <button onClick={() => handleReorder(order)} className="w-full border border-blue-900 text-blue-900 font-semibold py-2.5 rounded-lg hover:bg-blue-50 transition text-sm">
-                          Reorder
+                          {t('reorderBtn') || 'Reorder'}
                         </button>
                         <button onClick={() => setRefundOrder(order)} className="w-full border border-blue-900 text-blue-900 font-semibold py-2.5 rounded-lg hover:bg-blue-50 transition text-sm">
-                          Refunds
+                          {t('refundsBtn') || 'Refunds'}
                         </button>
                       </div>
 
@@ -424,13 +471,13 @@ const Orders = () => {
                     <div className="flex flex-col">
                       <span className="text-gray-600 line-clamp-1 w-[150px]">{refundOrder.items[0].name}</span>
                       {refundOrder.items.length > 1 && (
-                        <span className="text-xs text-gray-400 font-medium">+ {refundOrder.items.length - 1} more items</span>
+                        <span className="text-xs text-gray-400 font-medium">+ {refundOrder.items.length - 1} {t('moreItems') || 'more items'}</span>
                       )}
                     </div>
                   </div>
                   <div className="flex items-center gap-4 text-gray-500 w-full md:w-auto justify-between md:justify-start px-2">
-                    <span className="border-l border-gray-200 pl-4">Order ID: {refundOrder.id}</span>
-                    <span className="border-l border-gray-200 pl-4">Total: US ${(refundOrder.items.reduce((sum, item) => sum + item.price * item.qty, 0)).toFixed(2)}</span>
+                    <span className="border-l border-gray-200 pl-4">{t('orderId') || 'Order ID'}: {refundOrder.id}</span>
+                    <span className="border-l border-gray-200 pl-4">{t('totalLabel') || 'Total'}: US ${(refundOrder.items.reduce((sum, item) => sum + item.price * item.qty, 0)).toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -452,9 +499,9 @@ const Orders = () => {
                     <label className="text-sm text-gray-700">{t('returnReason')}</label>
                     <select className="w-full border border-gray-300 rounded-lg px-4 py-2 appearance-none focus:outline-none focus:border-blue-500 text-sm text-gray-700 bg-white">
                       <option value="">{t('selectFromList')}</option>
-                      <option value="defects">Defects or damage have been detected</option>
-                      <option value="non-compliance">Non-compliance with the declared characteristics</option>
-                      <option value="missing">The declared equipment or functions are missing</option>
+                      <option value="defects">{t('refundReasonDefects') || 'Defects or damage have been detected'}</option>
+                      <option value="non-compliance">{t('refundReasonNonCompliance') || 'Non-compliance with the declared characteristics'}</option>
+                      <option value="missing">{t('refundReasonMissing') || 'The declared equipment or functions are missing'}</option>
                     </select>
                     <ChevronDownIcon className="absolute right-4 top-8 text-gray-400 pointer-events-none" />
                   </div>
@@ -526,12 +573,12 @@ const Orders = () => {
                     <div className="flex flex-col">
                       <span className="text-gray-600 line-clamp-1 w-[150px]">{reviewOrder.items[0].name}</span>
                       {reviewOrder.items.length > 1 && (
-                        <span className="text-xs text-gray-400 font-medium">+ {reviewOrder.items.length - 1} more items</span>
+                        <span className="text-xs text-gray-400 font-medium">+ {reviewOrder.items.length - 1} {t('moreItems') || 'more items'}</span>
                       )}
                     </div>
                   </div>
                   <div className="flex items-center gap-4 text-gray-500 w-full md:w-auto justify-between md:justify-start px-2">
-                    <span className="border-l border-gray-200 pl-4">Order ID: {reviewOrder.id}</span>
+                    <span className="border-l border-gray-200 pl-4">{t('orderId') || 'Order ID'}: {reviewOrder.id}</span>
                   </div>
                 </div>
 
