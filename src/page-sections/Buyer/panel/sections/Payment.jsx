@@ -10,7 +10,7 @@ const Payment = () => {
   return (
     <div className="w-full flex flex-col items-center justify-center py-20 px-4 animate-fadeIn">
       <div className="w-[280px] h-[280px] md:w-[320px] md:h-[320px] relative mb-6">
-        <Image src="/images/empty-cart.svg" alt={t('noPaymentMethods') || 'No payment methods'} fill sizes="400px" className="object-contain" />
+        <Image src="/images/empty-cart-new.svg" alt={t('noPaymentMethods') || 'No payment methods'} fill sizes="400px" className="object-contain" />
       </div>
       <h3 className="text-xl font-bold text-[#104c9a] mb-2 text-center">
         {t('noPaymentMethods') || 'No payment methods'}
