@@ -13,7 +13,7 @@ import { login } from '@/store/auth/operations';
 import TextInput from '@/components/input/TextInput';
 import { useLanguage } from '@/context/LanguageContext';
 
-const SignInForm = ({ onToggleMode }) => {
+const SignInForm = ({ onToggleMode = undefined }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { t } = useLanguage();
