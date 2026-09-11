@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios from '@/services/api/axiosClient';
 
 // Interfaces for the API responses
 export interface ProductItem {

@@ -7,13 +7,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CategoryIcon } from '@/components/icons/CategoryIcons';
 import { catalogData } from '@/data/catalogData';
+import { catalogTranslations } from '@/data/catalogTranslations';
 
 const DropdownBtn = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeL1, setActiveL1] = useState(catalogData[0]);
   const [activeL2, setActiveL2] = useState(catalogData[0]?.children ? catalogData[0].children[0] : null);
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const router = useRouter();
+
+  const getLabel = (label) => {
+    if (locale === 'ua') {
+      return catalogTranslations[label] || label;
+    }
+    return label;
+  };
 
   const toggleDropdown = (e) => {
     e.preventDefault();
@@ -68,7 +76,7 @@ const DropdownBtn = () => {
                 >
                   <div className="flex items-center gap-3">
                     <CategoryIcon name={cat.icon} className="w-[20px] h-[20px]" />
-                    <span className="text-[15px]">{cat.label}</span>
+                    <span className="text-[15px]">{getLabel(cat.label)}</span>
                   </div>
                   {cat.children && (
                     <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +98,7 @@ const DropdownBtn = () => {
                     className={`flex items-center justify-between px-6 py-3 cursor-pointer transition-colors ${activeL2?.id === child.id ? 'text-brand-700 font-semibold' : 'text-gray-700 hover:text-brand-700'}`}
                     onMouseEnter={() => setActiveL2(child)}
                   >
-                    <span className="font-medium text-[15px]">{child.label}</span>
+                    <span className="font-medium text-[15px]">{getLabel(child.label)}</span>
                     {child.children && (
                       <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 9L5 5L1 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -99,7 +107,7 @@ const DropdownBtn = () => {
                   </Link>
                 ))
               ) : (
-                <div className="px-6 py-4 text-gray-400 text-sm italic">Немає підкатегорій</div>
+                <div className="px-6 py-4 text-gray-400 text-sm italic">{locale === 'ua' ? 'Немає підкатегорій' : 'No subcategories'}</div>
               )}
             </div>
 
@@ -113,7 +121,7 @@ const DropdownBtn = () => {
                     onClick={closeMenu}
                     className="flex items-center px-6 py-2.5 cursor-pointer transition-colors text-gray-600 hover:text-brand-700 text-[14px]"
                   >
-                    <span>{subchild.label}</span>
+                    <span>{getLabel(subchild.label)}</span>
                   </Link>
                 ))
               ) : null}
@@ -126,7 +134,7 @@ const DropdownBtn = () => {
               </div>
               <Link href="/catalogue" onClick={closeMenu}>
                 <button className="mt-4 px-8 py-3 bg-[#104c9a] text-white font-bold rounded-xl shadow-md hover:brightness-110 transition-all">
-                  Перейти до всіх товарів
+                  {locale === 'ua' ? 'Перейти до всіх товарів' : 'Go to all products'}
                 </button>
               </Link>
             </div>

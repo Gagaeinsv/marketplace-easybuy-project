@@ -9,7 +9,11 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'placehold.co',
+        hostname: '**',
+      },
+      {
+        protocol: 'http',
+        hostname: '**',
       },
     ],
   },
@@ -21,7 +25,12 @@ const nextConfig = {
     });
     return config;
   },
-  turbopack: {},
+  turbopack: {
+    root: process.cwd(),
+  },
+  experimental: {
+    optimizePackageImports: ['react-hot-toast', 'swiper', 'formik', 'yup', 'react-bootstrap'],
+  },
   async rewrites() {
     return [
       {

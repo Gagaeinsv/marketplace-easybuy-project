@@ -53,7 +53,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className="relative bg-white rounded-2xl p-6 shadow-2xl w-[90%] max-w-[500px] lg:max-w-[600px] max-h-[90vh] overflow-y-auto"
+        className="relative bg-white rounded-2xl p-5 sm:p-6 shadow-2xl w-[92%] max-w-[460px] max-h-[95vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <button

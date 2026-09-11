@@ -15,6 +15,7 @@ import TelegramIcon from '@/components/icons/TelegramIcon.jsx';
 import YouTubeIcon from '@/components/icons/YouTubeIcon.jsx';
 import { catalogData } from '@/data/catalogData';
 import { CategoryIcon } from '@/components/icons/CategoryIcons';
+import { catalogTranslations } from '@/data/catalogTranslations';
 
 export default function MobileMenu({ onClose }) {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -25,6 +26,13 @@ export default function MobileMenu({ onClose }) {
   const [activeView, setActiveView] = useState('main'); // 'main' | 'catalog'
   const [activeCatL1, setActiveCatL1] = useState(null);
   const [activeCatL2, setActiveCatL2] = useState(null);
+
+  const getLabel = (label) => {
+    if (locale === 'ua') {
+      return catalogTranslations[label] || label;
+    }
+    return label;
+  };
 
   const handleLogout = () => {
     dispatch(logOut());
@@ -48,7 +56,6 @@ export default function MobileMenu({ onClose }) {
           <div className="w-[120px] md:w-[150px]">
             <Logo />
           </div>
-          {/* Close Button is NOT in screenshot, but we need one! Let's put it on top right, inside the blue header, but maybe just use the backdrop to close it. Wait, the user might need a close button. Let's add it discreetly or just rely on backdrop. Actually, no close button in screenshot. I will omit it, they can tap outside. */}
         </div>
 
         {/* Content */}
@@ -192,11 +199,11 @@ export default function MobileMenu({ onClose }) {
                 className="flex items-center gap-2 text-brand-700 font-bold mb-4 pb-4 border-b border-gray-200 cursor-pointer"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                <span>Back</span>
+                <span>{t('back') || 'Back'}</span>
               </button>
 
               <h2 className="text-lg font-bold mb-4 text-gray-800">
-                {activeCatL2 ? activeCatL2.label : activeCatL1 ? activeCatL1.label : t('catalogue')}
+                {activeCatL2 ? getLabel(activeCatL2.label) : activeCatL1 ? getLabel(activeCatL1.label) : t('catalogue')}
               </h2>
 
               <ul className="flex flex-col">
@@ -216,7 +223,7 @@ export default function MobileMenu({ onClose }) {
                     >
                       <div className="flex items-center gap-3">
                         {!activeCatL1 && <CategoryIcon name={cat.icon} className="w-[20px] h-[20px]" />}
-                        <span className="text-[15px] font-medium">{cat.label}</span>
+                        <span className="text-[15px] font-medium">{getLabel(cat.label)}</span>
                       </div>
                       {cat.children && cat.children.length > 0 && (
                         <svg width="6" height="10" viewBox="0 0 6 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M1 9l4-4-4-4"/></svg>
@@ -225,7 +232,7 @@ export default function MobileMenu({ onClose }) {
                   </li>
                 ))}
                 {activeCatL1 && (!activeCatL2 ? activeCatL1.children : activeCatL2.children)?.length === 0 && (
-                  <li className="text-gray-400 italic text-sm py-4">No subcategories</li>
+                  <li className="text-gray-400 italic text-sm py-4">{locale === 'ua' ? 'Немає підкатегорій' : 'No subcategories'}</li>
                 )}
               </ul>
             </div>

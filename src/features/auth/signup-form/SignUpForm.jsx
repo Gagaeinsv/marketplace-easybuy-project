@@ -16,7 +16,7 @@ import Link from 'next/link';
 const registrationSchema = Yup.object().shape({
   email: Yup.string().email('Некоректна електронна пошта').required('Обов’язкове поле'),
   number: Yup.string()
-    .matches(/^\+\d{9,15}$/, 'Введіть номер у міжнародному форматі (напр. +380991234567)')
+    .matches(/^\+\d{9,15}$/, 'Введіть номер у міжнародному форматі (+380...)')
     .required('Обов’язкове поле'),
   password: Yup.string()
     .min(6, 'Пароль має бути не менше 6 символів')
@@ -29,7 +29,7 @@ const registrationSchema = Yup.object().shape({
   privacy: Yup.boolean().oneOf([true], 'Потрібно прийняти Політику конфіденційності').required('Обов’язково'),
 });
 
-const SignUpForm = ({ role = 'CUSTOMER' }) => {
+const SignUpForm = ({ role = 'CUSTOMER', onToggleMode }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
@@ -68,8 +68,8 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
   };
 
   return (
-    <div className="w-full max-w-[420px] mx-auto p-1">
-      <h1 className="flex justify-center font-dm font-bold text-2xl lg:text-3xl text-[#104c9a] mb-6">
+    <div className="w-full max-w-[400px] mx-auto font-dm">
+      <h1 className="flex justify-center font-bold text-xl lg:text-2xl text-[#104c9a] mb-3">
         {t('signUpTitle') || 'Реєстрація'}
       </h1>
       <Formik
@@ -85,7 +85,7 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
         }}
         onSubmit={handleSubmit}
       >
-        <Form className="flex flex-col text-black gap-3">
+        <Form className="flex flex-col text-black gap-2">
           <TextInput
             name="email"
             label={t('emailLabel') || 'Електронна пошта'}
@@ -120,35 +120,45 @@ const SignUpForm = ({ role = 'CUSTOMER' }) => {
             icon={showConfirmPassword ? <HideIcon /> : <ShowIcon />}
           />
 
-          <div className="flex flex-col gap-2 my-2 text-xs text-gray-700">
+          <div className="flex flex-col gap-1.5 my-1 text-[11px] text-gray-700">
             <label className="flex items-center gap-2 cursor-pointer">
-              <Field type="checkbox" name="agreement" className="w-4 h-4 rounded border-gray-300 accent-[#104c9a]" />
-              <span className="text-gray-700">{t('userAgreementLink') || 'Я приймаю Угоду користувача'}</span>
+              <Field type="checkbox" name="agreement" className="w-3.5 h-3.5 rounded border-gray-300 accent-[#104c9a]" />
+              <span className="text-gray-700 leading-tight">{t('userAgreementLink') || 'Я приймаю Угоду користувача'}</span>
             </label>
-            <ErrorMessage name="agreement" component="span" className="text-red-500 text-[11px]" />
+            <ErrorMessage name="agreement" component="span" className="text-red-500 text-[10px]" />
 
             <label className="flex items-center gap-2 cursor-pointer">
-              <Field type="checkbox" name="privacy" className="w-4 h-4 rounded border-gray-300 accent-[#104c9a]" />
-              <span className="text-gray-700">{t('privacyPolicyLink') || 'Я погоджуюсь з Політикою конфіденційності'}</span>
+              <Field type="checkbox" name="privacy" className="w-3.5 h-3.5 rounded border-gray-300 accent-[#104c9a]" />
+              <span className="text-gray-700 leading-tight">{t('privacyPolicyLink') || 'Я погоджуюсь з Політикою конфіденційності'}</span>
             </label>
-            <ErrorMessage name="privacy" component="span" className="text-red-500 text-[11px]" />
+            <ErrorMessage name="privacy" component="span" className="text-red-500 text-[10px]" />
           </div>
 
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full py-3 font-bold rounded-xl text-white transition-all duration-300 shadow-md ${
+            className={`w-full py-2.5 font-bold rounded-xl text-white text-sm transition-all duration-300 shadow-md mt-1 ${
               errorState ? 'bg-red-600' : 'bg-[#104c9a] hover:bg-[#071739]'
             } ${isLoading ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'}`}
           >
             {isLoading ? (t('loadingText') || 'Завантаження...') : (t('confirmBtn') || 'Зареєструватися')}
           </button>
 
-          <div className="text-center text-xs text-gray-500 mt-2">
+          <div className="text-center text-xs text-gray-500 mt-1.5">
             <span>{t('alreadyHaveAccount') || 'Вже є акаунт?'} </span>
-            <Link href="/login" className="text-[#104c9a] font-bold hover:underline">
-              {t('logInAction') || 'Увійти'}
-            </Link>
+            {onToggleMode ? (
+              <button 
+                type="button" 
+                onClick={onToggleMode}
+                className="text-[#104c9a] font-bold hover:underline bg-transparent border-none cursor-pointer"
+              >
+                {t('logInAction') || 'Увійти'}
+              </button>
+            ) : (
+              <Link href="/login" className="text-[#104c9a] font-bold hover:underline">
+                {t('logInAction') || 'Увійти'}
+              </Link>
+            )}
           </div>
         </Form>
       </Formik>

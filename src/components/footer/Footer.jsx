@@ -1,13 +1,18 @@
+'use client';
+
 import FooterList from '@/components/footer/footer-list/FooterList.jsx';
 import FooterSeller from '@/components/footer/footer-seller/FooterSeller.jsx';
 import SocialList from '@/components/social-list/SocialList.jsx';
 import Privacy from '@/components/privacy/Privacy.jsx';
 import LogoFooter from '@/components/footer/logo-footer/LogoFooter.jsx';
 import CopyrightIcon from '@/components/icons/CopyrightIcon.jsx';
+import { useLanguage } from '@/context/LanguageContext';
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
-    <footer className="bg-brand-700 text-white pt-10 pb-6">
+    <footer className="bg-brand-700 text-white pt-10 pb-6 font-dm">
       <div className="max-w-[1440px] mx-auto px-6 lg:px-16 w-full">
         <div className="flex flex-col md:flex-row md:justify-between items-center md:items-start mb-10 gap-y-10 md:gap-y-0">
           
@@ -26,12 +31,16 @@ const Footer = () => {
           </div>
 
         </div>
-        <div className="flex flex-col md:flex-row justify-between items-center border-t border-white/20 pt-6 mt-6 gap-y-6 md:gap-y-0">
+        
+        {/* Bottom Bar: Social Links, Single Copyright, Privacy Links */}
+        <div className="flex flex-col md:flex-row justify-between items-center border-t border-white/20 pt-6 mt-6 gap-y-4 md:gap-y-0">
           <SocialList />
-          <div className="flex items-center gap-x-2 text-xs font-medium">
+          
+          <div className="flex items-center gap-x-2 text-xs font-medium text-white/90">
             <CopyrightIcon />
-            <span>Easybuy.2024 All rights reserved</span>
+            <span>{t('copyright') || '© Easybuy. 2024–2026 Всі права захищені'}</span>
           </div>
+
           <div className="hidden md:block">
             <Privacy />
           </div>
