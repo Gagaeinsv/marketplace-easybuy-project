@@ -1,5 +1,5 @@
 const CloseBtnIcon = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" fill="none" viewBox="0 0 10 9">
+  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="9" fill="none" viewBox="0 0 10 9" {...props}>
     <path
       stroke="url(#paint0_linear_6093_9665)"
       strokeLinecap="round"
