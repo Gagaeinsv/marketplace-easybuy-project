@@ -52,10 +52,17 @@ export default function MobileMenu({ onClose }) {
       <div className="relative flex flex-col w-full max-w-[320px] h-full bg-white text-text shadow-2xl transition-transform duration-300 ease-out z-10 overflow-y-auto custom-scrollbar">
         
         {/* Header - Blue */}
-        <div className="flex items-center justify-center bg-brand-700 h-[60px] md:h-[72px] shrink-0 relative">
+        <div className="flex items-center justify-between bg-brand-700 h-[60px] md:h-[72px] shrink-0 px-4">
           <div className="w-[120px] md:w-[150px]">
             <Logo />
           </div>
+          <button 
+            onClick={onClose}
+            className="text-white hover:text-brand-400 transition-colors p-2 -mr-2 cursor-pointer"
+            aria-label="Close menu"
+          >
+            <CloseBtnIcon className="w-6 h-6" />
+          </button>
         </div>
 
         {/* Content */}

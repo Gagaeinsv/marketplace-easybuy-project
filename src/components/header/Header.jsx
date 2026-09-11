@@ -18,17 +18,33 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="header">
+    <header className="header relative z-50 w-full">
       <nav className="header-inner container">
-        {/* MOBILE: один ряд */}
-        <div className="flex items-center justify-between gap-3 lg:hidden h-[60px] md:h-[72px]">
-          <BurgerButton onClick={() => setIsMobileMenuOpen(true)} />
-          <Logo />
-          <div className="flex-1 min-w-0">
-            <SearchBox />
+        {/* MOBILE: два ряди */}
+        <div className="flex flex-col gap-3 lg:hidden py-3">
+          {/* Верхній ряд: Бургер, Лого, Іконки */}
+          <div className="flex items-center justify-between">
+            <BurgerButton onClick={() => setIsMobileMenuOpen(true)} />
+            <Logo />
+            <div className="flex items-center gap-3">
+              {isLoggedIn ? (
+                <Link href="/profile" className="lg:hidden">
+                  <p className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center text-[13px] text-brand-700 font-bold">
+                    {locale === 'ua' ? 'П' : 'P'}
+                  </p>
+                </Link>
+              ) : (
+                <Link href="/login" className="lg:hidden text-white hover:text-brand-400 transition-colors">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </Link>
+              )}
+              <HeaderIcons />
+            </div>
           </div>
-          <div className="flex items-center">
-            <HeaderIcons />
+          
+          {/* Нижній ряд: Рядок пошуку */}
+          <div className="w-full">
+            <SearchBox />
           </div>
         </div>
 
