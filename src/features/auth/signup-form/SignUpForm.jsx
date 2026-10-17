@@ -45,9 +45,11 @@ const SignUpForm = ({ role = 'CUSTOMER', onToggleMode }) => {
       const result = await dispatch(register({ ...registrationData, role }));
 
       if (register.fulfilled.match(result)) {
+        toast.success('Лист із підтвердженням надіслано на вашу пошту!');
         router.push('/check-email');
       } else {
-        toast.error(t('registrationFailed') || 'Помилка реєстрації.');
+        const errorMessage = typeof result.payload === 'string' ? result.payload : (t('registrationFailed') || 'Помилка реєстрації.');
+        toast.error(errorMessage);
         setErrorState(true);
 
         setTimeout(() => {

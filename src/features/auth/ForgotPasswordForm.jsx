@@ -7,6 +7,8 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLanguage } from '@/context/LanguageContext';
 
+import axios from '@/services/api/axiosClient';
+
 const forgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
 });
@@ -18,12 +20,11 @@ export default function ForgotPasswordForm({ onBack }) {
   const handleSubmit = async (values, actions) => {
     setIsLoading(true);
     try {
-      // Simulate API call for password reset request
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      toast.success('Password reset link sent to your email.');
+      await axios.post('v1/auth/password/forgot', { email: values.email });
+      toast.success('Лист для відновлення пароля надіслано на вашу пошту.');
       actions.resetForm();
     } catch (e) {
-      toast.error('An error occurred. Please try again.');
+      toast.error(e?.response?.data?.message || 'Сталася помилка. Спробуйте ще раз.');
     } finally {
       setIsLoading(false);
       actions.setSubmitting(false);

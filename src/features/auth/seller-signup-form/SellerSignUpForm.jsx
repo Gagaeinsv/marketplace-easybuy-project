@@ -49,10 +49,11 @@ export default function SellerSignUpForm() {
       }));
 
       if (register.fulfilled.match(result)) {
-        toast.success('Реєстрацію продавця успішно відправлено!');
+        toast.success('Реєстрацію продавця успішно відправлено! Перевірте пошту.');
         router.push('/check-email');
       } else {
-        toast.error('Помилка реєстрації продавця.');
+        const errorMessage = typeof result.payload === 'string' ? result.payload : 'Помилка реєстрації продавця.';
+        toast.error(errorMessage);
         setErrorState(true);
         setTimeout(() => setErrorState(false), 3000);
       }

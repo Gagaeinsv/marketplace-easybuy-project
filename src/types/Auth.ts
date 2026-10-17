@@ -8,11 +8,15 @@ export interface AuthState {
 }
 
 export interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
+  token?: string;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 export interface Credentials {
   email: string;
   password: string;
+  firstName?: string;
+  lastName?: string;
+  role?: 'CUSTOMER' | 'SELLER' | string;
 }

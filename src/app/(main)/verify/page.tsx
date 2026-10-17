@@ -4,26 +4,48 @@ import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
+import axios, { setAuthHeader } from '@/services/api/axiosClient';
+import { useAppDispatch } from '@/store/hooks';
+import { setAccessToken } from '@/store/auth/slice';
+
 function VerifyEmailComponent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const token = searchParams?.get('token');
+  const code = searchParams?.get('code');
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
 
   useEffect(() => {
     async function verify() {
-      // Simulate verification API call
+      if (!token && !code) {
+        setStatus('error');
+        return;
+      }
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        const res = await axios.post('v1/auth/confirm', {
+          token: token || code,
+          code: code || token,
+        });
+        const accessToken = res.data?.token || res.data?.accessToken;
+        const refreshToken = res.data?.refreshToken;
+        if (accessToken) {
+          localStorage.setItem('accessToken', accessToken);
+          setAuthHeader(accessToken);
+          dispatch(setAccessToken(accessToken));
+        }
+        if (refreshToken) {
+          localStorage.setItem('refreshToken', refreshToken);
+        }
         setStatus('success');
         toast.success('Email verified successfully!');
-      } catch (e) {
+      } catch (e: any) {
         setStatus('error');
-        toast.error('Email verification failed.');
+        toast.error(e?.response?.data?.message || 'Email verification failed.');
       }
     }
     verify();
-  }, [token]);
+  }, [token, code, dispatch]);
 
   return (
     <div className="text-center">

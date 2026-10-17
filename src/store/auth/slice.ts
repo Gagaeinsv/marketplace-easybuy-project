@@ -32,8 +32,9 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(register.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
-        state.accessToken = action.payload.accessToken;
-        state.isLoggedIn = true;
+        const token = action.payload?.accessToken || action.payload?.token || null;
+        state.accessToken = token;
+        state.isLoggedIn = Boolean(token);
         state.needsEmailVerification = true;
         state.isLoading = false;
       })
@@ -47,8 +48,9 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
-        state.accessToken = action.payload.accessToken;
-        state.isLoggedIn = true;
+        const token = action.payload?.accessToken || action.payload?.token || null;
+        state.accessToken = token;
+        state.isLoggedIn = Boolean(token);
         state.isLoading = false;
         state.needsEmailVerification = false;
       })
@@ -69,8 +71,9 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(refreshUser.fulfilled, (state, action: PayloadAction<AuthResponse>) => {
-        state.accessToken = action.payload.accessToken;
-        state.isLoggedIn = true;
+        const token = action.payload?.accessToken || action.payload?.token || null;
+        state.accessToken = token;
+        state.isLoggedIn = Boolean(token);
         state.isRefreshing = false;
         state.isLoading = false;
       })

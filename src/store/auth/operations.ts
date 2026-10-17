@@ -7,15 +7,23 @@ export const login = createAsyncThunk<AuthResponse, Credentials, { rejectValue: 
   async (credentials, thunkAPI) => {
     delete axios.defaults.headers.common.Authorization;
     try {
-      const res = await axios.post<AuthResponse>('auth/login', credentials);
-      const { accessToken, refreshToken } = res.data;
+      const payload = {
+        email: credentials.email,
+        password: credentials.password,
+      };
+      const res = await axios.post<AuthResponse>('v1/auth/authenticate', payload);
+      const accessToken = res.data.token || res.data.accessToken || '';
+      const refreshToken = res.data.refreshToken || '';
 
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
+      if (accessToken) {
+        localStorage.setItem('accessToken', accessToken);
+        setAuthHeader(accessToken);
+      }
+      if (refreshToken) {
+        localStorage.setItem('refreshToken', refreshToken);
+      }
 
-      setAuthHeader(accessToken);
-
-      return res.data;
+      return { ...res.data, accessToken, refreshToken };
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -25,13 +33,28 @@ export const login = createAsyncThunk<AuthResponse, Credentials, { rejectValue: 
   }
 );
 
-export const register = createAsyncThunk<AuthResponse, Credentials, { rejectValue: string }>(
+export const register = createAsyncThunk<AuthResponse, Credentials & Record<string, any>, { rejectValue: string }>(
   'auth/register',
   async (credentials, thunkAPI) => {
+    delete axios.defaults.headers.common.Authorization;
     try {
-      const res = await axios.post<AuthResponse>('auth/register', credentials);
-      setAuthHeader(res.data.accessToken);
-      return res.data;
+      const payload: Record<string, any> = {
+        email: credentials.email,
+        password: credentials.password,
+        role: credentials.role || 'CUSTOMER',
+      };
+      if (credentials.firstName) payload.firstName = credentials.firstName;
+      if (credentials.lastName) payload.lastName = credentials.lastName;
+
+      const res = await axios.post<AuthResponse | string>('v1/auth/register', payload);
+      if (typeof res.data === 'object' && res.data !== null) {
+        const accessToken = res.data.token || res.data.accessToken;
+        if (accessToken) {
+          setAuthHeader(accessToken);
+          return { ...res.data, accessToken };
+        }
+      }
+      return { accessToken: '', refreshToken: '' };
     } catch (error) {
       if (axios.isAxiosError(error)) {
         return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
@@ -40,18 +63,18 @@ export const register = createAsyncThunk<AuthResponse, Credentials, { rejectValu
     }
   }
 );
+
 export const logOut = createAsyncThunk<void, void, { rejectValue: string }>(
   'auth/logout',
   async (_, thunkAPI) => {
     try {
-      await axios.get('auth/logout');
-
+      await axios.post('v1/auth/logout');
+    } catch (error) {
+      // Clear local session even if server logout fails
+    } finally {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-
-      delete axios.defaults.headers.common.Authorization;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error instanceof Error ? error.message : 'Logout failed');
+      clearAuthHeader();
     }
   }
 );
@@ -63,14 +86,21 @@ export const refreshUser = createAsyncThunk<AuthResponse, void, { rejectValue: s
       const refreshToken = localStorage.getItem('refreshToken');
       if (!refreshToken) throw new Error('No refresh token');
 
-      const res = await axios.post<AuthResponse>('auth/refresh', { refreshToken });
+      setAuthHeader(refreshToken);
+      const res = await axios.post<AuthResponse>('v1/auth/refresh', { refreshToken });
 
-      const newAccessToken = res.data.accessToken;
+      const newAccessToken = res.data.token || res.data.accessToken || '';
+      const newRefreshToken = res.data.refreshToken || refreshToken;
 
-      localStorage.setItem('accessToken', newAccessToken);
-      setAuthHeader(newAccessToken);
+      if (newAccessToken) {
+        localStorage.setItem('accessToken', newAccessToken);
+        setAuthHeader(newAccessToken);
+      }
+      if (newRefreshToken) {
+        localStorage.setItem('refreshToken', newRefreshToken);
+      }
 
-      return res.data;
+      return { ...res.data, accessToken: newAccessToken, refreshToken: newRefreshToken };
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error instanceof Error ? error.message : 'Unable to refresh user'
